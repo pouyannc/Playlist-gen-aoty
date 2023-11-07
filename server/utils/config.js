@@ -1,5 +1,14 @@
 require('dotenv').config();
 
-const { PORT } = process.env;
+const { 
+  PORT, 
+  CLIENT_ID, 
+  CLIENT_SECRET,
+  REDIRECT_URI } = process.env;
 
-module.exports = { PORT };
+module.exports = { 
+  PORT, 
+  CLIENT_ID, 
+  CLIENT_SECRET,
+  REDIRECT_URI 
+};

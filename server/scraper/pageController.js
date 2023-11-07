@@ -4,7 +4,8 @@ const scrapeAll = async (browserInstance) => {
 	let browser;
 	try{
 		browser = await browserInstance;
-		await pageScraper.scraper(browser);	
+		const tracklist = await pageScraper.scraper(browser);	
+    return tracklist
 	}
 	catch(err){
 		console.log("Could not resolve the browser instance => ", err);
