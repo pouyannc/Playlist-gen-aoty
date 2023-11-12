@@ -17,8 +17,11 @@ function App() {
 
   const getAlbumsList = async () => {
     const accessToken = localStorage.getItem('access');
+    const scrapeUrl = encodeURIComponent('https://www.albumoftheyear.org/releases/this-week/');
+    const nrTracks = 20;
+    const tracksPerAlbum = 3;
     console.log('Populating tracklist...')
-    const tracklist = await axios.get(`${url}/tracklist?access_token=${accessToken}`)
+    const tracklist = await axios.get(`${url}/tracklist?access_token=${accessToken}&scrape_url=${scrapeUrl}&nr_tracks=${nrTracks}&tracks_per=${tracksPerAlbum}`)
     const newPlaylist = await axios.post(`${url}/playlist/create?access_token=${accessToken}`, { uid: uid, playlistName: 'New generated list' });
     const playlistID = newPlaylist.data.id;
     console.log('created new playlist', playlistID)

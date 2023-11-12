@@ -1,25 +1,27 @@
 const trackListRouter = require('express').Router();
 const { default: axios } = require('axios');
-const scrape = require('../scraper/index');
+const PuppeteerManager = require('../scraper/puppeteerManager');
 
 trackListRouter.get('/', async (req, res) => {
-  const { length, s } = req.query;
-  const scrapeUrl = `https://www.albumoftheyear.org/2023/releases/?type=lp&s=${s}`;
-  const accessToken = req.query.access_token;
+  const { scrape_url, nr_tracks, tracks_per, access_token } = req.query;
 
-  const trackList = await scrape();
+  const arg = { url: scrape_url, nrOfTracks: nr_tracks, tracksPerAlbum: tracks_per }
+  const scraper = new PuppeteerManager(arg);
+
+  const trackList = await scraper.runPuppeteer();
 
   // Convert the tracklist from names to spotify URIs
   const config = {
-    headers: { Authorization: `Bearer ${accessToken}` }
+    headers: { Authorization: `Bearer ${access_token}` }
   }
   const trackURIs = [];
-  for (trackName of trackList) {
-    const searchRes = await axios.get(`https://api.spotify.com/v1/search?q=${trackName}&type=track&limit=1`, config);
+  for (track of trackList) {
+    const trackName = track.title.replace(' ', '%20');
+    const artistName = track.artist.replace(' ', '%20');
+    const searchRes = await axios.get(`https://api.spotify.com/v1/search?q=${trackName}%20${artistName}&type=track&limit=1`, config);
     trackURIs.push(searchRes.data.tracks.items[0].uri);
   }
 
-  // Create a new spotify playlist
   await res.json(trackURIs);
 })
 
