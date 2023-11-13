@@ -1,35 +1,17 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect} from 'react'
+import { useDispatch } from 'react-redux'
 import './App.css'
-import axios from 'axios';
 import { getUID } from './reducers/userReducer';
 import { setTokens } from './services/user';
 import { useSearchParams } from 'react-router-dom';
+import PageContent from './components/pageContent';
+import PageSwitch from './components/PageSwitch';
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const uid = useSelector(({ user }) => user.spotifyUID);
 
-  const url = 'http://localhost:3003/api'
-
-  const [albums, setAlbums] = useState([]);
-
-  const getAlbumsList = async () => {
-    const accessToken = localStorage.getItem('access');
-    const scrapeUrl = encodeURIComponent('https://www.albumoftheyear.org/releases/this-week/');
-    const nrTracks = 20;
-    const tracksPerAlbum = 3;
-    console.log('Populating tracklist...')
-    const tracklist = await axios.get(`${url}/tracklist?access_token=${accessToken}&scrape_url=${scrapeUrl}&nr_tracks=${nrTracks}&tracks_per=${tracksPerAlbum}`)
-    const newPlaylist = await axios.post(`${url}/playlist/create?access_token=${accessToken}`, { uid: uid, playlistName: 'New generated list' });
-    const playlistID = newPlaylist.data.id;
-    console.log('created new playlist', playlistID)
-    console.log(tracklist.data);
-    await axios.post(`${url}/playlist/populate?access_token=${accessToken}`, { pid: playlistID, uris: tracklist.data });
-    
-    setAlbums(tracklist.data);
-  }
+  const serverUrl = 'http://localhost:3003/api'
 
   useEffect(() => {
     let accessToken = localStorage.getItem('access');
@@ -58,9 +40,12 @@ function App() {
 
   return (
     <>
-      <a href={`${url}/login`}>Login with Spotify</a>
-      <button type='button' onClick={getAlbumsList}>Generate List</button>
-      <div>{albums.map((a) => <div key={Math.random()*9999}>{a}</div>)}</div>
+      <a href={`${serverUrl}/login`}>Login with Spotify</a>
+      <PageSwitch />
+      <PageContent />
+      {
+      //<div>{albums.map((a) => <div key={Math.random()*9999}>{a}</div>)}</div>
+      }
     </>
   )
 }

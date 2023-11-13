@@ -3,7 +3,7 @@ class PuppeteerManager {
       this.url = args.url
       this.nrOfTracks = args.nrOfTracks
       this.tracksPerAlbum = args.tracksPerAlbum
-      this.newReleases = true;
+      this.sortReleases = args.sortReleases;
   }
 
   async runPuppeteer() {
@@ -23,29 +23,39 @@ class PuppeteerManager {
     console.log(this.url, this.nrOfTracks, this.tracksPerAlbum)
     console.log('going to url', this.url)
     await page.goto(this.url, { waitUntil: 'domcontentloaded' });
-
-    const albumUrls = await this.getAllAlbumUrlsOnPage(page, this.newReleases);
+    const albumUrls = await this.getAllAlbumUrlsOnPage(page, this.sortReleases);
     const tracks = await this.getTracks(page, albumUrls, this.nrOfTracks, this.tracksPerAlbum);
-
 
     console.log('done')
     await browser.close()
     return tracks;
   }
 
-  async getAllAlbumUrlsOnPage(page, sortNewReleases = false) {
+  async getAllAlbumUrlsOnPage(page, sortReleases = false) {
     console.log('Waiting for selector to load...');
     await page.waitForSelector('#centerContent');
     console.log('Constructing links array...')
-    const lpLinks = await page.$$eval('.albumBlock > a + a', (albums) => albums.map((a) => a.href));
+    const lpLinks = await page.$$eval('.image > a', (albums) => albums.map((a) => a.href));
+    console.log('sort releases?', sortReleases)
 
     // Include number of ratings in the links array, sort by ratings, and returns sorted links
-    if (sortNewReleases) {
-      const numberOfRatings = await page.$$eval('.ratingRow:nth-of-type(2) .ratingText:nth-of-type(2)', (ratings) => (
-        ratings.map((r) => r.innerText.replace(/\(|\)/g, ''))
-      ))
-      const lpLinksWithRatings = lpLinks.map((l, i) => ({ url: l, ratings: numberOfRatings[i] }));
+    if (sortReleases === 'true') {
+      console.log('Sorting releases by number of ratings...');
+      const ratingRowContainers = await page.$$('.ratingRowContainer');
+      const nrUserRatings = []
+      for (let i = 0; i < ratingRowContainers.length; i++) {
+        const ratings = await ratingRowContainers[i].$$eval('.ratingText', (ratingTexts) => {
+          for (let i = 0; i < ratingTexts.length; i++) {
+            if (ratingTexts[i].innerText === 'user score') return ratingTexts[i+1].innerText;
+          }
+          return '0';
+        });
+        nrUserRatings.push(ratings.replace(/\(|\)|\,/g, ''));
+      }
+
+      const lpLinksWithRatings = lpLinks.map((l, i) => ({ url: l, ratings: nrUserRatings[i] }));
       const lpLinksSorted = lpLinksWithRatings.sort((a, b) => parseInt(b.ratings) - parseInt(a.ratings));
+      //console.log('sorted lps:', lpLinksSorted)
       return lpLinksSorted.map((lpObject) => lpObject.url);
     }
 
@@ -62,14 +72,17 @@ class PuppeteerManager {
       const artist = await page.$eval('.artist a', (a) => a.innerText);
       const onSpotify = await page.$('.albumButton.spotify')
       if (onSpotify) {
-        const trackTitles = await page.$$eval('.trackTitle > a', (trackNames) => trackNames.map(t => t.innerText));
+        let trackTitles = await page.$$eval('.trackTitle > a', (trackNames) => trackNames.map(t => t.innerText));
+        if (!trackTitles[0]) {
+          trackTitles = await page.$$eval('.trackList li', (trackNames) => trackNames.map(t => t.innerText));
+        }
         const randomTitles = shuffle(trackTitles);
         for (let j = 0; j < tracksPerAlbum; j++) {
           tracks.push({ title: randomTitles[j], artist });
+          console.log('Pushed to tracklist:', tracks[i], tracks.length)
           if (tracks.length == nrOfTracks) return tracks;
         }
       }
-      console.log(tracks)
     }
   }
 }
