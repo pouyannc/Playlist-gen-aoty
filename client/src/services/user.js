@@ -30,7 +30,6 @@ const getSpotifyUID = async () => {
     const res = await axios.get(profileURL, { headers: { 'Authorization': tokens.accessToken } });
     return res.data.id;
   }
-  
 }
 
 export {

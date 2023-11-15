@@ -20,24 +20,25 @@ class PuppeteerManager {
       dumpio: false,
     });
     let page = await browser.newPage();
-    console.log(this.url, this.nrOfTracks, this.tracksPerAlbum)
     console.log('going to url', this.url)
     await page.goto(this.url, { waitUntil: 'domcontentloaded' });
+
     const albumUrls = await this.getAllAlbumUrlsOnPage(page, this.sortReleases);
-    const tracks = await this.getTracks(page, albumUrls, this.nrOfTracks, this.tracksPerAlbum);
+
+    const res = await this.getTracks(page, albumUrls, this.nrOfTracks, this.tracksPerAlbum);
 
     console.log('done')
     await browser.close()
-    return tracks;
+    return res;
   }
 
   async getAllAlbumUrlsOnPage(page, sortReleases = false) {
     console.log('Waiting for selector to load...');
     await page.waitForSelector('#centerContent');
-    console.log('Constructing links array...')
-    const lpLinks = await page.$$eval('.image > a', (albums) => albums.map((a) => a.href));
-    console.log('sort releases?', sortReleases)
 
+    console.log('Constructing links array...')
+    let lpLinks = await page.$$eval('.image > a', (albums) => albums.map((a) => a.href));
+    
     // Include number of ratings in the links array, sort by ratings, and returns sorted links
     if (sortReleases === 'true') {
       console.log('Sorting releases by number of ratings...');
@@ -56,7 +57,7 @@ class PuppeteerManager {
       const lpLinksWithRatings = lpLinks.map((l, i) => ({ url: l, ratings: nrUserRatings[i] }));
       const lpLinksSorted = lpLinksWithRatings.sort((a, b) => parseInt(b.ratings) - parseInt(a.ratings));
       //console.log('sorted lps:', lpLinksSorted)
-      return lpLinksSorted.map((lpObject) => lpObject.url);
+      lpLinks = lpLinksSorted.map((lpObject) => lpObject.url);
     }
 
     return lpLinks;

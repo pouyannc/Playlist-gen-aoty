@@ -13,7 +13,6 @@ playlistRouter.post('/create', async (req, res) => {
   const playlistRes = await axios.post(`https://api.spotify.com/v1/users/${uid}/playlists`, playlistReq, { headers: {'Authorization': `Bearer ${accessToken}` } });
   const pid = playlistRes.data;
   res.json(pid);
-
 })
 
 playlistRouter.post('/populate', async (req, res) => {

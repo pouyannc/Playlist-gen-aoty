@@ -3,8 +3,7 @@ const { default: axios } = require('axios');
 const PuppeteerManager = require('../scraper/puppeteerManager');
 
 trackListRouter.get('/', async (req, res) => {
-  const { scrape_url, nr_tracks, tracks_per, access_token, sort } = req.query;
-
+  const { scrape_url, nr_tracks, tracks_per, access_token, sort, return_type} = req.query;
   const arg = { url: scrape_url, nrOfTracks: nr_tracks, tracksPerAlbum: tracks_per, sortReleases: sort }
   const scraper = new PuppeteerManager(arg);
 
@@ -15,16 +14,17 @@ trackListRouter.get('/', async (req, res) => {
   const config = {
     headers: { Authorization: `Bearer ${access_token}` }
   }
-  const trackURIs = [];
+  const trackData = [];
   console.log(trackList)
   for (track of trackList) {
     const trackName = encodeURIComponent(track.title);
     const artistName = encodeURIComponent(track.artist);
     const searchRes = await axios.get(`https://api.spotify.com/v1/search?q=${trackName}%20${artistName}&type=track&limit=1`, config);
-    trackURIs.push(searchRes.data.tracks.items[0].uri);
+    if (return_type === 'uri') trackData.push(searchRes.data.tracks.items[0].uri);
+    else if (return_type === 'cover') trackData.push(searchRes.data.tracks.items[0].album.images[1].url);
   }
 
-  await res.json(trackURIs);
+  await res.json(trackData);
 })
 
 module.exports = trackListRouter;
