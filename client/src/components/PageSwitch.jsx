@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch } from 'react-redux'
 import { initNew, initRecent } from '../reducers/playlistReducer';
 
@@ -12,9 +11,11 @@ const PageSwitch = () => {
 
   return (
     <div>
-      <button onClick={() => handlePageSwitch('new')}>new</button>
-      <button onClick={() => handlePageSwitch('recent')}>recent</button>
-      <button>decades</button>
+      <div>
+        <button onClick={() => handlePageSwitch('new')}>new</button>
+        <button onClick={() => handlePageSwitch('recent')}>recent</button>
+        <button>decades</button>
+      </div>
     </div>
   )
 }

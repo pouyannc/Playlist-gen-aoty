@@ -8,6 +8,7 @@ const PageContent = () => {
   return (
     <div>
       <h2>{playlistInfo.title}</h2>
+      <div>{playlistInfo.description}</div>
       <RelevantCoverArts />
       <OptionsForm />
     </div>

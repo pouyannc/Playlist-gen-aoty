@@ -10,8 +10,9 @@ const getCoverArts = async (q) => {
     nrOfTracks,
     sortReleases,
     returnType,
+    type
   } = q;
-  const res = await axios.get(`${serverUrl}?access_token=${accessToken}&scrape_url=${scrapeUrl}&nr_tracks=${nrOfTracks}&tracks_per=${tracksPerAlbum}&sort=${sortReleases}&return_type=${returnType}`)
+  const res = await axios.get(`${serverUrl}?access_token=${accessToken}&scrape_url=${scrapeUrl}&nr_tracks=${nrOfTracks}&tracks_per=${tracksPerAlbum}&sort=${sortReleases}&return_type=${returnType}&type=${type}`)
   return res.data;
 }
 

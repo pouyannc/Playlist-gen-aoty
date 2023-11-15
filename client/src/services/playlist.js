@@ -8,10 +8,10 @@ const getTracklist = async (q) => {
     scrapeUrl,
     tracksPerAlbum,
     nrOfTracks,
-    sortReleases,
+    type,
     returnType,
   } = q;
-  const res = await axios.get(`${serverUrl}/tracklist?access_token=${accessToken}&scrape_url=${scrapeUrl}&nr_tracks=${nrOfTracks}&tracks_per=${tracksPerAlbum}&sort=${sortReleases}&return_type=${returnType}`)
+  const res = await axios.get(`${serverUrl}/tracklist?access_token=${accessToken}&scrape_url=${scrapeUrl}&nr_tracks=${nrOfTracks}&tracks_per=${tracksPerAlbum}&type=${type}&return_type=${returnType}`)
   return res.data;
 }
 

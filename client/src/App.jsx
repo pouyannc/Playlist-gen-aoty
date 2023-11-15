@@ -6,6 +6,7 @@ import { setTokens } from './services/user';
 import { useSearchParams } from 'react-router-dom';
 import PageContent from './components/pageContent';
 import PageSwitch from './components/PageSwitch';
+import SubPageSwitch from './components/SubPageSwitch';
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,6 +43,7 @@ function App() {
     <>
       <a href={`${serverUrl}/login`}>Login with Spotify</a>
       <PageSwitch />
+      <SubPageSwitch />
       <PageContent />
       {
       //<div>{albums.map((a) => <div key={Math.random()*9999}>{a}</div>)}</div>

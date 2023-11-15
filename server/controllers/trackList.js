@@ -3,8 +3,8 @@ const { default: axios } = require('axios');
 const PuppeteerManager = require('../scraper/puppeteerManager');
 
 trackListRouter.get('/', async (req, res) => {
-  const { scrape_url, nr_tracks, tracks_per, access_token, sort, return_type} = req.query;
-  const arg = { url: scrape_url, nrOfTracks: nr_tracks, tracksPerAlbum: tracks_per, sortReleases: sort }
+  const { scrape_url, nr_tracks, tracks_per, access_token, sort, return_type, type} = req.query;
+  const arg = { url: scrape_url, nrOfTracks: nr_tracks, tracksPerAlbum: tracks_per, type }
   const scraper = new PuppeteerManager(arg);
 
   const trackList = await scraper.runPuppeteer();

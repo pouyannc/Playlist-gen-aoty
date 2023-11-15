@@ -3,7 +3,7 @@ class PuppeteerManager {
       this.url = args.url
       this.nrOfTracks = args.nrOfTracks
       this.tracksPerAlbum = args.tracksPerAlbum
-      this.sortReleases = args.sortReleases;
+      this.type = args.type;
   }
 
   async runPuppeteer() {
@@ -23,7 +23,7 @@ class PuppeteerManager {
     console.log('going to url', this.url)
     await page.goto(this.url, { waitUntil: 'domcontentloaded' });
 
-    const albumUrls = await this.getAllAlbumUrlsOnPage(page, this.sortReleases);
+    const albumUrls = await this.getAllAlbumUrlsOnPage(page, this.type);
 
     const res = await this.getTracks(page, albumUrls, this.nrOfTracks, this.tracksPerAlbum);
 
@@ -32,15 +32,38 @@ class PuppeteerManager {
     return res;
   }
 
-  async getAllAlbumUrlsOnPage(page, sortReleases = false) {
+  async getAllAlbumUrlsOnPage(page, type) {
     console.log('Waiting for selector to load...');
     await page.waitForSelector('#centerContent');
 
     console.log('Constructing links array...')
-    let lpLinks = await page.$$eval('.image > a', (albums) => albums.map((a) => a.href));
-    
+    let lpLinks = [];
+    if (type === 'months' || type === 'years') {
+      let nrPages;
+      if (type === 'months') nrPages = 4;
+      else if (type === 'years') nrPages = 3;
+      let maxPageLength = 0;
+      const monthLinks = [];
+      for (let i = 0; i < nrPages; i++) {
+        console.log('on page', i + 1);
+        await page.waitForSelector('.prev');
+        const currentMonth = await page.$$eval('.image > a', (albums) => albums.map((a) => a.href));
+        if (currentMonth.length > maxPageLength) maxPageLength = currentMonth.length;
+        monthLinks.push(currentMonth);
+        const nextPage = await page.$eval('.headline + div > a', (pageLink) => pageLink.href);
+        await page.goto(nextPage, { waitUntil: 'domcontentloaded' });
+      }
+      for (let i = 0; i < maxPageLength; i++) {
+        for (let j = 0; j < monthLinks.length; j++) {
+          if (monthLinks[j][i]) lpLinks.push(monthLinks[j][i]);
+        }
+      }
+    } else {
+      lpLinks = await page.$$eval('.image > a', (albums) => albums.map((a) => a.href));
+    }
+
     // Include number of ratings in the links array, sort by ratings, and returns sorted links
-    if (sortReleases === 'true') {
+    if (type === 'new') {
       console.log('Sorting releases by number of ratings...');
       const ratingRowContainers = await page.$$('.ratingRowContainer');
       const nrUserRatings = []
