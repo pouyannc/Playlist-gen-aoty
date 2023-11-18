@@ -7,10 +7,10 @@ const RelevantCoverArts = () => {
   const coverArtUrls = useSelector(({ coverArtUrls }) => coverArtUrls);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem('access');
-    dispatch(getCoverUrls({ ...playlistInfo, tracksPerAlbum: 1, nrOfTracks: 6, returnType: 'cover', accessToken }));
-  }, [playlistInfo])
+  // useEffect(() => {
+  //   const accessToken = localStorage.getItem('access');
+  //   dispatch(getCoverUrls({ ...playlistInfo, tracksPerAlbum: 1, nrOfTracks: 6, returnType: 'cover', accessToken }));
+  // }, [])
 
   console.log(coverArtUrls)
 

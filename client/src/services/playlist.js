@@ -1,8 +1,10 @@
 import axios from 'axios';
+import refreshSessionIfNeeded from '../util/checkAndRefreshSession.ja';
 
 const serverUrl = 'http://localhost:3003/api'
 
 const getTracklist = async (q) => {
+  await refreshSessionIfNeeded();
   const {
     accessToken,
     scrapeUrl,
@@ -16,6 +18,7 @@ const getTracklist = async (q) => {
 }
 
 const createPlaylist = async (req) => {
+  await refreshSessionIfNeeded();
   const {
     accessToken,
     uid,
@@ -25,6 +28,7 @@ const createPlaylist = async (req) => {
 }
 
 const populatePlaylist = async (req) => {
+  await refreshSessionIfNeeded();
   const {
     accessToken,
     playlistID,

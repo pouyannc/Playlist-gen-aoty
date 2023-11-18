@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getSpotifyUID } from "../services/user";
 
 const initialState = {
-  spotifyUID: ''
+  spotifyUID: '',
 }
 
 const userSlice = createSlice({
@@ -10,7 +10,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUID(state, action) {
-      return { spotifyUID: action.payload };
+      return { ...state, spotifyUID: action.payload };
     },
     logout() {
       return initialState;

@@ -45,11 +45,12 @@ loginRouter.get('/callback', async (req, res) => {
     const tokenRes = await axios.post(authOptions.url, authOptions.form, authOptions.headers)
     const paramsObj = {
       access_token: tokenRes.data.access_token,
-      refresh_token: tokenRes.data.refresh_token 
+      refresh_token: tokenRes.data.refresh_token,
+      expires_in: tokenRes.data.expires_in,
     };
     const searchParams = new URLSearchParams(paramsObj);
 
-    console.log('assigned access and refresh tokens')
+    console.log('assigned new access and refresh tokens')
     res.redirect('http://localhost:5173/?' + searchParams.toString());
 
   } catch (error) {
@@ -77,13 +78,14 @@ loginRouter.get('/refresh', async (req, res) => {
 
   try{
     const tokenRes = await axios.post(authOptions.url, authOptions.form, authOptions.headers)
+    console.log('refreshed token')
     const paramsObj = {
       access_token: tokenRes.data.access_token,
-      refresh_token: tokenRes.data.refresh_token 
+      expires_in: tokenRes.data.expires_in,
     };
     res.status(201).json(paramsObj);
   } catch (error) {
-    console.log('error')
+    console.log('error', error)
   }
 })
 

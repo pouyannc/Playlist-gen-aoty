@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import coverArtsService from '../services/coverArts';
 
+// const initialState = {
+//   new: [],
+//   months: [],
+//   currentYear: [],
+//   years: [],
+// }
+
 const coverArtSlice = createSlice({
   name: 'coverArt',
   initialState: [],

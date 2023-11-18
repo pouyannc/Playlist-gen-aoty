@@ -11,7 +11,7 @@ const OptionsForm = () => {
     e.preventDefault();
 
     const accessToken = localStorage.getItem('access');
-    console.log('Populating tracklist...')
+    console.log('Generating tracklist...')
     const tracklist = await playlistService.getTracklist({ accessToken, ...playlistInfo, returnType: 'uri' });
 
     // console.log('Creating new playlist for spotify user...')
