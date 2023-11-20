@@ -16,9 +16,15 @@ const SubPageSwitch = () => {
   return (
     contentCategory === 'recent' &&  
       <div>
-        <button onClick={() => handlePageSwitch('months')}>months</button>
-        <button onClick={() => handlePageSwitch(currentYear)}>{currentYear}</button>
-        <button onClick={() => handlePageSwitch('years')}>years</button>
+        <div>
+          <button onClick={() => handlePageSwitch('months')}>months</button>
+          <button onClick={() => handlePageSwitch(currentYear)}>{currentYear}</button>
+          <button onClick={() => handlePageSwitch('years')}>years</button>
+        </div>
+        <div>
+          <button>must-hear</button>
+          <button>popular</button>
+        </div>
       </div>
   )
 }
