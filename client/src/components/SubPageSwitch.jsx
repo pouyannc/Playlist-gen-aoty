@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { initRecent, switchCurrentYear, switchRecentYears } from '../reducers/playlistReducer';
+import { initRecent, setSort, switchCurrentYear, switchRecentYears } from '../reducers/playlistReducer';
 
 const SubPageSwitch = () => {
   const currentYear = new Date().getFullYear();
@@ -12,6 +12,11 @@ const SubPageSwitch = () => {
     else if (type === currentYear) dispatch(switchCurrentYear());
     else if (type === 'years') dispatch(switchRecentYears());
   }
+  
+  const handleSortSwitch = (type) => {
+    if (type === 'must-hear') dispatch(setSort('rating'));
+    else if (type === 'popular') dispatch(setSort('popular'));
+  }
 
   return (
     contentCategory === 'recent' &&  
@@ -22,8 +27,8 @@ const SubPageSwitch = () => {
           <button onClick={() => handlePageSwitch('years')}>years</button>
         </div>
         <div>
-          <button>must-hear</button>
-          <button>popular</button>
+          <button onClick={() => handleSortSwitch('must-hear')}>must-hear</button>
+          <button onClick={() => handleSortSwitch('popular')}>popular</button>
         </div>
       </div>
   )
