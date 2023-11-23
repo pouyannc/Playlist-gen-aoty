@@ -1,14 +1,15 @@
 import { useSelector } from 'react-redux';
 import OptionsForm from './OptionsForm';
 import RelevantCoverArts from './RelevantCoverArts';
+import { Typography } from '@mui/material';
 
 const PageContent = () => {
   const playlistInfo = useSelector(({ playlistOptions }) => playlistOptions)
   
   return (
     <div>
-      <h2>{playlistInfo.title}</h2>
-      <div>{playlistInfo.description}</div>
+      <Typography variant='h2'>{playlistInfo.title}</Typography>
+      <Typography>{playlistInfo.description}</Typography>
       <RelevantCoverArts />
       <OptionsForm />
     </div>

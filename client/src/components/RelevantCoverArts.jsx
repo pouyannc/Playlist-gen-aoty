@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from 'uuid';
 import { getCoverUrls } from "../reducers/coverArtReducer";
-import Loader from "./Loader";
+import { ImageList, ImageListItem, ImageListItemBar, Paper, Skeleton } from "@mui/material";
 
 const RelevantCoverArts = () => {
   const playlistInfo = useSelector(({ playlistOptions }) => playlistOptions)
@@ -19,12 +19,25 @@ const RelevantCoverArts = () => {
   }, [currentPlaylistType])
 
   return (
-    !coverArtUrls[currentPlaylistType] ?
-      <Loader loadingMsg="Loading preview..." /> :
-      <div>
-        {coverArtUrls[currentPlaylistType].map((src) => (<img key={uuidv4()} src={src} />))}
-      </div>
+    <ImageList sx={{ maxWidth: 760, p: 2 }} cols={3}>
+      {(!coverArtUrls[currentPlaylistType] ? Array.from(new Array(6)) : coverArtUrls[currentPlaylistType]).map((album) => (
+        <Paper key={uuidv4()} elevation={10} sx={{ m: 0.8, width: 200, height: 200, bgcolor: "gray" }}>
+          {album ? (
+            <ImageListItem sx={{ p: 0.6 }}>
+              <img src={album.src} />
+              <ImageListItemBar subtitle={album.artist} sx={{ m: 0.8, height: '14%' }} />
+            </ImageListItem>     
+            ) : (
+              <Skeleton animation='wave' variant="rounded" width={200} height={200} />
+            )
+          }
+        </Paper>
+      ))}
+    </ImageList>
   )
 }
 
 export default RelevantCoverArts
+
+// !coverArtUrls[currentPlaylistType] ?
+//       <Loader loadingMsg="Loading preview..." /> :

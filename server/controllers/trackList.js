@@ -21,7 +21,10 @@ trackListRouter.get('/', async (req, res) => {
     const artistName = encodeURIComponent(track.artist);
     const searchRes = await axios.get(`https://api.spotify.com/v1/search?q=${trackName}%20${artistName}&type=track&limit=1`, config);
     if (return_type === 'uri') trackData.push(searchRes.data.tracks.items[0].uri);
-    else if (return_type === 'cover') trackData.push(searchRes.data.tracks.items[0].album.images[1].url);
+    else if (return_type === 'cover') trackData.push({
+      src: searchRes.data.tracks.items[0].album.images[1].url,
+      artist: track.artist,
+    });
   }
 
   await res.json(trackData);

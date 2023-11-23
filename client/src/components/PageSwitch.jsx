@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { initNew, initRecent } from '../reducers/playlistReducer';
+import { Button } from '@mui/material';
 
 const PageSwitch = () => {
   const dispatch = useDispatch();
@@ -12,8 +13,8 @@ const PageSwitch = () => {
   return (
     <div>
       <div>
-        <button onClick={() => handlePageSwitch('new')}>new</button>
-        <button onClick={() => handlePageSwitch('recent')}>recent</button>
+        <Button onClick={() => handlePageSwitch('new')}>new</Button>
+        <Button onClick={() => handlePageSwitch('recent')}>recent</Button>
       </div>
     </div>
   )

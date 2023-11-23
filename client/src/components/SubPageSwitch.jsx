@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { initRecent, setSort, switchCurrentYear, switchRecentYears } from '../reducers/playlistReducer';
+import { Button } from '@mui/material';
 
 const SubPageSwitch = () => {
   const currentYear = new Date().getFullYear();
@@ -22,13 +23,13 @@ const SubPageSwitch = () => {
     contentCategory === 'recent' &&  
       <div>
         <div>
-          <button onClick={() => handlePageSwitch('months')}>months</button>
-          <button onClick={() => handlePageSwitch(currentYear)}>{currentYear}</button>
-          <button onClick={() => handlePageSwitch('years')}>years</button>
+          <Button onClick={() => handlePageSwitch('months')}>months</Button>
+          <Button onClick={() => handlePageSwitch(currentYear)}>{currentYear}</Button>
+          <Button onClick={() => handlePageSwitch('years')}>years</Button>
         </div>
         <div>
-          <button onClick={() => handleSortSwitch('must-hear')}>must-hear</button>
-          <button onClick={() => handleSortSwitch('popular')}>popular</button>
+          <Button onClick={() => handleSortSwitch('must-hear')}>must-hear</Button>
+          <Button onClick={() => handleSortSwitch('popular')}>popular</Button>
         </div>
       </div>
   )
