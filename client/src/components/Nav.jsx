@@ -1,6 +1,14 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { logout } from "../reducers/userReducer";
 
 const Nav = () => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  }
+
   return (
       <AppBar position="static" >
         <Toolbar sx={{ justifyContent: "space-between" }}>
@@ -18,7 +26,7 @@ const Nav = () => {
             </Typography>
             <Box>
               <Button color="inherit">Profile</Button>
-              <Button color="inherit">Logout</Button>
+              <Button color="inherit" onClick={handleLogout}>Logout</Button>
             </Box>
         </Toolbar>
       </AppBar>

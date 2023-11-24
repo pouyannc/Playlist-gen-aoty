@@ -17,8 +17,6 @@ const genres = {
   indierock: 1,
 }
 
-console.log(month[currentMonth], currentMonth);
-
 const initialState = {
   category: 'new',
   type: 'new',
@@ -77,7 +75,6 @@ const playlistOptionsSlice = createSlice({
       let newType = state.type.split('/');
       newType[1] = action.payload;
       newType = newType.join('/');
-      console.log('new type:', newType)
       return { ...state, type: newType, scrapeUrl: encodeURIComponent(newUrl.href) };
     },
     setGenre(state, action) {
@@ -92,7 +89,6 @@ const playlistOptionsSlice = createSlice({
       let newType = state.type.split('/');
       newType[2] = action.payload;
       newType = newType.join('/');
-      console.log('new type:', newType)
       return { ...state, type: newType, scrapeUrl: encodeURIComponent(newUrl.href) };
     },
     setTracksPerAlbum(state, action) {

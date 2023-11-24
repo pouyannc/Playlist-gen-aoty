@@ -29,7 +29,6 @@ const OptionsForm = () => {
   }
 
   const handleGenreChange = (e) => {
-    console.log('switching to genre: ', e.target.value);
     dispatch(setGenre(e.target.value));
   }
 
@@ -82,6 +81,7 @@ const OptionsForm = () => {
               <MenuItem value={1}>High</MenuItem>
               <MenuItem value={2}>Medium</MenuItem>
               <MenuItem value={3}>Low</MenuItem>
+              <MenuItem value={4}>Very Low</MenuItem>
             </Select>
           </FormControl>
           <Button onSubmit={getAlbumsList}>Generate List</Button>

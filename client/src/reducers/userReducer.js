@@ -13,6 +13,9 @@ const userSlice = createSlice({
       return { ...state, spotifyUID: action.payload };
     },
     logout() {
+      localStorage.removeItem('access');
+      localStorage.removeItem('refresh');
+      localStorage.removeItem('expiresAt');
       return initialState;
     }
   }

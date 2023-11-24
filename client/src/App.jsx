@@ -2,20 +2,22 @@ import { useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUID } from './reducers/userReducer';
 import { setTokens } from './services/user';
-import { useSearchParams } from 'react-router-dom';
+import { Route, Routes, useSearchParams } from 'react-router-dom';
 import PageContent from './components/pageContent';
 import PageSwitch from './components/PageSwitch';
 import SubPageSwitch from './components/SubPageSwitch';
 import saveSessionExpiry from './util/saveSessionExpiry';
 import { Container } from '@mui/material';
 import Nav from './components/Nav';
+import GenPage from './components/GenPage';
+import LoginPage from './components/LoginPage';
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const uid = useSelector(({ user }) => user.spotifyUID);
   const dispatch = useDispatch();
 
-  const serverUrl = 'http://localhost:3003/api'
+  
 
   useEffect(() => {
     let accessToken = localStorage.getItem('access');
@@ -48,7 +50,7 @@ function App() {
   return (
     uid === '' ?
       <>
-        <a href={`${serverUrl}/login`}>Login with Spotify</a>
+        <LoginPage />
       </>
     :
       <Container sx={{
@@ -58,9 +60,9 @@ function App() {
         textAlign: 'center'
       }}>
         <Nav />
-        <PageSwitch />
-        <SubPageSwitch />
-        <PageContent />
+        <Routes>
+          <Route path='/' element={<GenPage />} />
+        </Routes>
       </Container>
   )
 }
