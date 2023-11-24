@@ -1,8 +1,9 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { initNew, initRecent } from '../reducers/playlistReducer';
-import { Button } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 
 const PageSwitch = () => {
+  const playlistCat = useSelector(({ playlistOptions }) => playlistOptions.category)
   const dispatch = useDispatch();
 
   const handlePageSwitch = (type) => {
@@ -11,12 +12,12 @@ const PageSwitch = () => {
   }
 
   return (
-    <div>
-      <div>
-        <Button onClick={() => handlePageSwitch('new')}>new</Button>
-        <Button onClick={() => handlePageSwitch('recent')}>recent</Button>
-      </div>
-    </div>
+    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Tabs value={playlistCat} centered>
+        <Tab value='new' label='New' onClick={() => handlePageSwitch('new')}/>
+        <Tab value='recent' label='Recent' onClick={() => handlePageSwitch('recent')}/>
+      </Tabs>
+    </Box>
   )
 }
 

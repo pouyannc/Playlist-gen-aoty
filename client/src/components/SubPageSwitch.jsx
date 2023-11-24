@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { initRecent, setSort, switchCurrentYear, switchRecentYears } from '../reducers/playlistReducer';
-import { Button } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 
 const SubPageSwitch = () => {
   const currentYear = new Date().getFullYear();
 
-  const contentCategory = useSelector(({ playlistOptions }) => playlistOptions.category);
+  const playlistInfo = useSelector(({ playlistOptions }) => playlistOptions);
   const dispatch = useDispatch();
 
   const handlePageSwitch = (type) => {
@@ -20,18 +20,18 @@ const SubPageSwitch = () => {
   }
 
   return (
-    contentCategory === 'recent' &&  
-      <div>
-        <div>
-          <Button onClick={() => handlePageSwitch('months')}>months</Button>
-          <Button onClick={() => handlePageSwitch(currentYear)}>{currentYear}</Button>
-          <Button onClick={() => handlePageSwitch('years')}>years</Button>
-        </div>
-        <div>
-          <Button onClick={() => handleSortSwitch('must-hear')}>must-hear</Button>
-          <Button onClick={() => handleSortSwitch('popular')}>popular</Button>
-        </div>
-      </div>
+    playlistInfo.category === 'recent' &&  
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={playlistInfo.type.split('/')[0]} centered>
+          <Tab value='months' label='Months' onClick={() => handlePageSwitch('months')} />
+          <Tab value={currentYear.toString()} label={currentYear} onClick={() => handlePageSwitch(currentYear)} />
+          <Tab value='years' label='Years' onClick={() => handlePageSwitch('years')} />
+        </Tabs>
+        <Tabs value={playlistInfo.type.split('/')[1]} centered>
+          <Tab value='rating' label='Must-Hear' onClick={() => handleSortSwitch('must-hear')} />
+          <Tab value='popular' label='Popular' onClick={() => handleSortSwitch('popular')} />
+        </Tabs>
+      </Box>
   )
 }
 
