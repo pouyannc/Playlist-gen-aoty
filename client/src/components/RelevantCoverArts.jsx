@@ -20,7 +20,7 @@ const RelevantCoverArts = () => {
 
   return (
     <ImageList sx={{ maxWidth: 760, p: 2 }} cols={3}>
-      {(!coverArtUrls[currentPlaylistType] ? Array.from(new Array(6)) : coverArtUrls[currentPlaylistType]).map((album) => (
+      {(!Array.isArray(coverArtUrls[currentPlaylistType]) ? Array.from(new Array(6)) : coverArtUrls[currentPlaylistType]).map((album) => (
         <Paper key={uuidv4()} elevation={10} sx={{ m: 0.8, width: 200, height: 200, bgcolor: "gray" }}>
           {album ? (
             <ImageListItem sx={{ p: 0.6 }}>

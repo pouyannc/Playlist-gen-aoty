@@ -17,7 +17,11 @@ const generateRandomString = (length) => {
 loginRouter.get('/', async (req, res) => {
   const state = generateRandomString(16);
 
-  res.redirect(`https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=code&scope=playlist-modify-public&redirect_uri=${REDIRECT_URI}`)
+  try {
+    res.redirect(`https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=code&scope=playlist-modify-public&redirect_uri=${REDIRECT_URI}`)
+  } catch (err) {
+    console.log(err, 'error at login redirect');
+  }
 })
 
 loginRouter.get('/callback', async (req, res) => {
@@ -54,7 +58,7 @@ loginRouter.get('/callback', async (req, res) => {
     res.redirect('http://localhost:5173/?' + searchParams.toString());
 
   } catch (error) {
-    console.log('error')
+    console.log(error, 'error retrieving auth tokens')
   }
 })
 
@@ -85,7 +89,7 @@ loginRouter.get('/refresh', async (req, res) => {
     };
     res.status(201).json(paramsObj);
   } catch (error) {
-    console.log('error', error)
+    console.log(error, 'error refreshing auth tokens' )
   }
 })
 

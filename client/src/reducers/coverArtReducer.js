@@ -17,6 +17,7 @@ const coverArtSlice = createSlice({
 export const { setCoverUrls } = coverArtSlice.actions;
 
 export const getCoverUrls = (params) => async (dispatch) => {
+  dispatch(setCoverUrls({ type: params.type, coverUrls: true }));
   const coverUrls = await coverArtsService.getCoverArts(params);
   dispatch(setCoverUrls({ type: params.type, coverUrls }));
 }
