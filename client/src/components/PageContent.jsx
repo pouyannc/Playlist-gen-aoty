@@ -9,8 +9,8 @@ const PageContent = () => {
   return (
     <div>
       <Typography variant='h2'>{playlistInfo.title}</Typography>
-      <Typography>{playlistInfo.description}</Typography>
       <RelevantCoverArts />
+      <Typography>{playlistInfo.description}</Typography>
       <OptionsForm />
     </div>
   )

@@ -43,47 +43,47 @@ const OptionsForm = () => {
   return (
     <Box >
       <form style={{ display: 'flex', justifyContent: 'center' }}>
-        <FormGroup sx={{
-          
-        }}>
-          {playlistInfo.category === 'recent' &&
-            <FormControl variant="standard">
-              <InputLabel id="genres">Genre</InputLabel>
-              <Select labelId="genres" value={controlGenre} label='Genre' onChange={handleGenreChange}>
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="pop">Pop</MenuItem>
-                <MenuItem value="rock">Rock</MenuItem>
-                <MenuItem value="hiphop">Hip Hop</MenuItem>
-                <MenuItem value="electronic">Electronic</MenuItem>
-                <MenuItem value="indierock">Indie Rock</MenuItem>
-                <MenuItem value="dance">Dance</MenuItem>
-                <MenuItem value="rb">R&B</MenuItem>
-                <MenuItem value="singersongwriter">Singer-Songwriter</MenuItem>
-                <MenuItem value="metal">Metal</MenuItem>
-                <MenuItem value="trap">Trap</MenuItem>
+        <FormGroup>
+          <Box sx={{ }}>
+            {playlistInfo.category === 'recent' &&
+              <FormControl sx={{ m: 1, minWidth: 150 }}>
+                <InputLabel id="genres">Genre</InputLabel>
+                <Select labelId="genres" value={controlGenre} label='Genre' onChange={handleGenreChange}>
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="pop">Pop</MenuItem>
+                  <MenuItem value="rock">Rock</MenuItem>
+                  <MenuItem value="hiphop">Hip Hop</MenuItem>
+                  <MenuItem value="electronic">Electronic</MenuItem>
+                  <MenuItem value="indierock">Indie Rock</MenuItem>
+                  <MenuItem value="dance">Dance</MenuItem>
+                  <MenuItem value="rb">R&B</MenuItem>
+                  <MenuItem value="singersongwriter">Singer-Songwriter</MenuItem>
+                  <MenuItem value="metal">Metal</MenuItem>
+                  <MenuItem value="trap">Trap</MenuItem>
+                </Select>
+              </FormControl>
+            }
+            <FormControl sx={{ m: 1, minWidth: 150 }}>
+              <InputLabel id="nrOfTracks">Length</InputLabel>
+              <Select labelId="nrOfTracks" value={playlistInfo.nrOfTracks} label='Length' onChange={handleLengthChange}>
+                <MenuItem value={10}>10 Tracks</MenuItem>
+                <MenuItem value={20}>20 Tracks</MenuItem>
+                <MenuItem value={30}>30 Tracks</MenuItem>
+                <MenuItem value={40}>40 Tracks</MenuItem>
+                <MenuItem value={50}>50 Tracks</MenuItem>
+                <MenuItem value={60}>60 Tracks</MenuItem>
               </Select>
             </FormControl>
-          }
-          <FormControl variant="standard">
-            <InputLabel id="nrOfTracks">Length</InputLabel>
-            <Select labelId="nrOfTracks" value={playlistInfo.nrOfTracks} label='Length' onChange={handleLengthChange}>
-              <MenuItem value={10}>10 Tracks</MenuItem>
-              <MenuItem value={20}>20 Tracks</MenuItem>
-              <MenuItem value={30}>30 Tracks</MenuItem>
-              <MenuItem value={40}>40 Tracks</MenuItem>
-              <MenuItem value={50}>50 Tracks</MenuItem>
-              <MenuItem value={60}>60 Tracks</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl variant="standard">
-            <InputLabel id="tracksPerAlbum">Album Diversity</InputLabel>
-            <Select labelId="tracksPerAlbum" value={playlistInfo.tracksPerAlbum} label='Diversity' onChange={handleDiversityChange}>
-              <MenuItem value={1}>High</MenuItem>
-              <MenuItem value={2}>Medium</MenuItem>
-              <MenuItem value={3}>Low</MenuItem>
-              <MenuItem value={4}>Very Low</MenuItem>
-            </Select>
-          </FormControl>
+            <FormControl sx={{ m: 1, minWidth: 150 }}>
+              <InputLabel id="tracksPerAlbum">Album Diversity</InputLabel>
+              <Select labelId="tracksPerAlbum" value={playlistInfo.tracksPerAlbum} label='Diversity' onChange={handleDiversityChange}>
+                <MenuItem value={1}>High</MenuItem>
+                <MenuItem value={2}>Medium</MenuItem>
+                <MenuItem value={3}>Low</MenuItem>
+                <MenuItem value={4}>Very Low</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
           <Button onSubmit={getAlbumsList}>Generate List</Button>
         </FormGroup>
       </form>
