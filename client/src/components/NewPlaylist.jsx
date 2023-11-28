@@ -3,7 +3,6 @@ import { useSelector } from "react-redux"
 
 const NewPlaylist = () => {
   const newPlaylist = useSelector(({ generatedPlaylist }) => generatedPlaylist);
-  const requestedNrOfTracks = useSelector(({ playlistOptions }) => playlistOptions.nrOfTracks);
 
   return (
     !newPlaylist.nrOfTracks > 0 ?
@@ -11,7 +10,7 @@ const NewPlaylist = () => {
       <Box sx={{ borderTop: 1, borderColor: 'divider' }}>
         <Typography variant="subtitle1" sx={{ mt: 2 }} gutterBottom>The playlist has been generated and added to your Spotify account.</Typography>
         {
-          requestedNrOfTracks > newPlaylist.nrOfTracks &&
+          newPlaylist.notEnoughTracks &&
             <Typography variant="subtitle1" gutterBottom>*It seems there weren&apos;t enough tracks to meet the requested playlist length. Choosing a lower album diversity might solve this.</Typography>
         }
         <iframe

@@ -22,8 +22,9 @@ const createPlaylist = async (req) => {
   const {
     accessToken,
     uid,
+    playlistName
   } = req;
-  const res = await axios.post(`${serverUrl}/playlist/create?access_token=${accessToken}`, { uid: uid, playlistName: 'New generated list' });
+  const res = await axios.post(`${serverUrl}/playlist/create?access_token=${accessToken}`, { uid, playlistName });
   return res.data;
 }
 

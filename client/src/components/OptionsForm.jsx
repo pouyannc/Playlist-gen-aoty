@@ -2,15 +2,16 @@ import { useDispatch, useSelector } from "react-redux"
 import { setGenre, setNrOfTracks, setTracksPerAlbum } from "../reducers/playlistOptionsReducer"
 import playlistService from '../services/playlist';
 import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select } from "@mui/material";
-import { setGeneratePlaylist, setGeneratedNrOfTracks, setPlaylistId } from "../reducers/generatedPlaylistReducer";
+import { setGeneratePlaylist, setGeneratedNrOfTracks, setNotEnoughTracks, setPlaylistId, setPlaylistNameGenre } from "../reducers/generatedPlaylistReducer";
 
 const OptionsForm = () => {
   const playlistInfo = useSelector(({ playlistOptions }) => playlistOptions);
+  const playlistInfoTypeArr = playlistInfo.type.split('/');
   const generatedPlaylistInfo = useSelector(({ generatedPlaylist }) => generatedPlaylist);
   const uid = useSelector(({ user }) => user.spotifyUID);
   const dispatch = useDispatch();
 
-  const controlGenre = playlistInfo.type.split('/')[2];
+  const controlGenre = playlistInfoTypeArr[2];
 
   const getAlbumsList = async (e) => {
     e.preventDefault();
@@ -20,10 +21,12 @@ const OptionsForm = () => {
     console.log('Generating tracklist...')
     const tracklist = await playlistService.getTracklist({ accessToken, ...playlistInfo, returnType: 'uri' });
 
-    if (tracklist.length < playlistInfo.nrOfTracks) console.log('Looks like there were not enough tracks in this category to meet the requested playlist length');
+    if (tracklist.length < playlistInfo.nrOfTracks) dispatch(setNotEnoughTracks(true));
 
     console.log('Creating new playlist for spotify user...')
-    const newPlaylist = await playlistService.createPlaylist({ accessToken, uid });
+    let playlistName = `AOTY ${playlistInfo.title}`;
+    if (generatedPlaylistInfo.name.sort !== '') playlistName += ` - ${generatedPlaylistInfo.name.sort} ${generatedPlaylistInfo.name.genre}`
+    const newPlaylist = await playlistService.createPlaylist({ accessToken, uid, playlistName });
     const playlistID = newPlaylist.id;
     dispatch(setPlaylistId(playlistID));
     console.log('Populating the playlist...')
@@ -33,6 +36,7 @@ const OptionsForm = () => {
 
   const handleGenreChange = (e) => {
     dispatch(setGenre(e.target.value));
+    dispatch(setPlaylistNameGenre(e.target.value));
   }
 
   const handleLengthChange = (e) => {

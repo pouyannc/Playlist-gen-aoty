@@ -21,7 +21,7 @@ const RelevantCoverArts = () => {
   }, [currentPlaylistType])
 
   return (
-    <ImageList sx={{ maxWidth: 760, p: 2 }} cols={3}>
+    <ImageList sx={{ p: 2 }} cols={3}>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
@@ -30,14 +30,14 @@ const RelevantCoverArts = () => {
         onClose={(e, reason) => reason !== 'clickaway' && setOpen(false)}
       />
       {(!Array.isArray(coverArtUrls[currentPlaylistType]) ? Array.from(new Array(6)) : coverArtUrls[currentPlaylistType]).map((album) => (
-        <Paper key={uuidv4()} elevation={10} sx={{ m: 0.8, width: 200, height: 200, bgcolor: "gray" }}>
+        <Paper key={uuidv4()} elevation={10} sx={{ m: 0.8, width: 240, height: 240, bgcolor: "gray" }}>
           {album ? (
             <ImageListItem sx={{ p: 0.6 }}>
               <img src={album.src} />
               <ImageListItemBar subtitle={album.artist} sx={{ m: 0.8, height: '14%' }} />
             </ImageListItem>     
             ) : (
-              <Skeleton animation='wave' variant="rounded" width={200} height={200} />
+              <Skeleton animation='wave' variant="rounded" width={240} height={240} />
             )
           }
         </Paper>

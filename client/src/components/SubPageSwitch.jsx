@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { initRecent, setSort, switchCurrentYear, switchRecentYears } from '../reducers/playlistOptionsReducer';
 import { Box, Tab, Tabs } from '@mui/material';
+import { setPlaylistNameSort } from '../reducers/generatedPlaylistReducer';
 
 const SubPageSwitch = () => {
   const currentYear = new Date().getFullYear();
@@ -9,14 +10,20 @@ const SubPageSwitch = () => {
   const dispatch = useDispatch();
 
   const handlePageSwitch = (type) => {
+    dispatch(setPlaylistNameSort('Must-Hear'))
     if (type === 'months') dispatch(initRecent());
     else if (type === currentYear) dispatch(switchCurrentYear());
     else if (type === 'years') dispatch(switchRecentYears());
   }
   
   const handleSortSwitch = (type) => {
-    if (type === 'must-hear') dispatch(setSort('rating'));
-    else if (type === 'popular') dispatch(setSort('popular'));
+    if (type === 'must-hear') {
+      dispatch(setSort('rating'));
+      dispatch(setPlaylistNameSort('Must-Hear'));
+    } else if (type === 'popular') {
+      dispatch(setSort('popular'));
+      dispatch(setPlaylistNameSort('Popular'));
+    }
   }
 
   return (
