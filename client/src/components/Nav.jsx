@@ -1,6 +1,7 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { logout } from "../reducers/userReducer";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,9 @@ const Nav = () => {
   return (
       <AppBar position="static" >
         <Toolbar sx={{ justifyContent: "space-between" }}>
-            <Typography 
+            <Typography
+              component={Link}
+              to="/"
               variant="h6"
               noWrap
               sx={{
@@ -22,10 +25,10 @@ const Nav = () => {
                 textDecoration: 'none',
               }}
             >
-              Playlist Gen
+              AOTY Playlist Gen
             </Typography>
             <Box>
-              <Button color="inherit">Profile</Button>
+              <Button component={Link} to="/about" color="inherit">About</Button>
               <Button color="inherit" onClick={handleLogout}>Logout</Button>
             </Box>
         </Toolbar>

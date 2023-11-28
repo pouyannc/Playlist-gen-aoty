@@ -11,6 +11,7 @@ import { Container } from '@mui/material';
 import Nav from './components/Nav';
 import GenPage from './components/GenPage';
 import LoginPage from './components/LoginPage';
+import AboutPage from './components/AboutPage';
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,6 +63,7 @@ function App() {
         <Nav />
         <Routes>
           <Route path='/' element={<GenPage />} />
+          <Route path='/about' element={<AboutPage />} />
         </Routes>
       </Container>
   )
