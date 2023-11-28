@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './reducers/userReducer';
-import playlistReducer from './reducers/playlistReducer';
+import playlistOptionsReducer from './reducers/playlistOptionsReducer';
 import coverArtReducer from './reducers/coverArtReducer';
+import generatedPlaylistReducer from './reducers/generatedPlaylistReducer';
 
 const store = configureStore({
   reducer: {
     user: userReducer,
-    playlistOptions: playlistReducer,
+    playlistOptions: playlistOptionsReducer,
     coverArtUrls: coverArtReducer,
+    generatedPlaylist: generatedPlaylistReducer,
   }
 })
 

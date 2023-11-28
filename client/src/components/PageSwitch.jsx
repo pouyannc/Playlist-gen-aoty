@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { initNew, initRecent } from '../reducers/playlistReducer';
+import { initNew, initRecent } from '../reducers/playlistOptionsReducer';
 import { Box, Tab, Tabs } from '@mui/material';
 
 const PageSwitch = () => {

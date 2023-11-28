@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { initRecent, setSort, switchCurrentYear, switchRecentYears } from '../reducers/playlistReducer';
+import { initRecent, setSort, switchCurrentYear, switchRecentYears } from '../reducers/playlistOptionsReducer';
 import { Box, Tab, Tabs } from '@mui/material';
 
 const SubPageSwitch = () => {

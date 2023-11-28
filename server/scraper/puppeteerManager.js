@@ -89,7 +89,9 @@ class PuppeteerManager {
   async getTracks(page, albumUrls, nrOfTracks, tracksPerAlbum) {
     const shuffle = require('../utils/shuffle');
     let tracks = [];
-    for (let i = 0; i < albumUrls.length; i++) {
+    let albumUrlsLength = albumUrls.length
+    if (nrOfTracks === '6') albumUrlsLength = albumUrls.length/2;
+    for (let i = 0; i < albumUrlsLength; i++) {
       console.log("Navigating to LP page... ", albumUrls[i]);
       await page.goto(albumUrls[i], { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('#centerContent');

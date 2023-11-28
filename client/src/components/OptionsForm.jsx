@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
-import { setGenre, setNrOfTracks, setTracksPerAlbum } from "../reducers/playlistReducer"
+import { setGenre, setNrOfTracks, setTracksPerAlbum } from "../reducers/playlistOptionsReducer"
 import playlistService from '../services/playlist';
 import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select } from "@mui/material";
+import { setGeneratePlaylist, setGeneratedNrOfTracks, setPlaylistId } from "../reducers/generatedPlaylistReducer";
 
 const OptionsForm = () => {
-  const playlistInfo = useSelector(({ playlistOptions }) => playlistOptions)
+  const playlistInfo = useSelector(({ playlistOptions }) => playlistOptions);
+  const generatedPlaylistInfo = useSelector(({ generatedPlaylist }) => generatedPlaylist);
   const uid = useSelector(({ user }) => user.spotifyUID);
   const dispatch = useDispatch();
 
@@ -12,6 +14,7 @@ const OptionsForm = () => {
 
   const getAlbumsList = async (e) => {
     e.preventDefault();
+    dispatch(setGeneratePlaylist(true));
 
     const accessToken = localStorage.getItem('access');
     console.log('Generating tracklist...')
@@ -19,13 +22,13 @@ const OptionsForm = () => {
 
     if (tracklist.length < playlistInfo.nrOfTracks) console.log('Looks like there were not enough tracks in this category to meet the requested playlist length');
 
-    // console.log('Creating new playlist for spotify user...')
-    // const newPlaylist = await playlistService.createPlaylist({ accessToken, uid });
-    // const playlistID = newPlaylist.id;
-    // console.log('created new playlist', playlistID)
-    // console.log(tracklist);
-    // console.log('Populating the playlist...')
-    // await playlistService.populatePlaylist({ accessToken, playlistID, tracklist })
+    console.log('Creating new playlist for spotify user...')
+    const newPlaylist = await playlistService.createPlaylist({ accessToken, uid });
+    const playlistID = newPlaylist.id;
+    dispatch(setPlaylistId(playlistID));
+    console.log('Populating the playlist...')
+    await playlistService.populatePlaylist({ accessToken, playlistID, tracklist })
+    dispatch(setGeneratedNrOfTracks(tracklist.length));
   }
 
   const handleGenreChange = (e) => {
@@ -84,7 +87,7 @@ const OptionsForm = () => {
               </Select>
             </FormControl>
           </Box>
-          <Button onSubmit={getAlbumsList}>Generate List</Button>
+          <Button variant="contained" disabled={generatedPlaylistInfo.generatePlaylist && !(generatedPlaylistInfo.nrOfTracks > 0)} sx={{ mb: 3 }} onClick={getAlbumsList}>Generate List</Button>
         </FormGroup>
       </form>
     </Box>
