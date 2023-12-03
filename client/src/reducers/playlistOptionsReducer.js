@@ -39,7 +39,7 @@ const playlistOptionsSlice = createSlice({
         category: 'recent',
         type: 'months/rating/all',
         title: 'Recent Months',
-        description: 'Generate a compilation of tracks from the must-hear albums of the last four months',
+        description: 'Generate a compilation of tracks from the hottest albums of the last four months',
         tracksPerAlbum: 1,
         nrOfTracks: 30,
         scrapeUrl: encodeURIComponent(`https://www.albumoftheyear.org/${currentYear}/releases/${month[currentMonth]}-${currentMonth+1}.php?type=lp&s=user&reviews=500`),
@@ -50,7 +50,7 @@ const playlistOptionsSlice = createSlice({
         ...state,
         type: `${currentYear}/rating/all`,
         title: currentYear,
-        description: `Generate a compilation of tracks from the must-hear albums of ${currentYear}`,
+        description: `Generate a compilation of tracks from the hottest albums of ${currentYear}`,
         scrapeUrl: encodeURIComponent(`https://www.albumoftheyear.org/${currentYear}/releases/?type=lp&s=user&reviews=500`),
       }
     },
@@ -59,7 +59,7 @@ const playlistOptionsSlice = createSlice({
         ...state,
         type: 'years/rating/all',
         title: 'Recent Years',
-        description: 'Generate a compilation of tracks from the must-hear albums of the last three years',
+        description: 'Generate a compilation of tracks from the hottest albums of the last three years',
         scrapeUrl: encodeURIComponent(`https://www.albumoftheyear.org/${currentYear}/releases/?type=lp&s=user&reviews=500`),
       }
     },

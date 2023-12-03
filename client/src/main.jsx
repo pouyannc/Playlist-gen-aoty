@@ -3,11 +3,31 @@ import { Provider } from 'react-redux'
 import App from './App.jsx'
 import store from './store.js'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { ThemeProvider } from '@emotion/react'
+import { CssBaseline, createTheme } from '@mui/material'
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `
+        '& .css-wxwh31-MuiContainer-root' {
+          max-width: 200px;
+        }
+      `,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <Provider store={store}>
-      <App />
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
     </Provider>
   </Router>
 )

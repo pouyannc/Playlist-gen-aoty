@@ -1,1 +1,2 @@
-# Playlist generator
+# AOTY Playlist generator
+

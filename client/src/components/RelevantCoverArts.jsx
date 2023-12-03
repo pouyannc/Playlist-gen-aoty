@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from 'uuid';
 import { getCoverUrls } from "../reducers/coverArtReducer";
-import { ImageList, ImageListItem, ImageListItemBar, Paper, Skeleton, Snackbar } from "@mui/material";
+import { Box, ImageListItem, ImageListItemBar, Paper, Skeleton, Snackbar } from "@mui/material";
 
 const RelevantCoverArts = () => {
   const playlistInfo = useSelector(({ playlistOptions }) => playlistOptions)
@@ -21,7 +21,13 @@ const RelevantCoverArts = () => {
   }, [currentPlaylistType])
 
   return (
-    <ImageList sx={{ p: 2 }} cols={3}>
+    <Box sx={{
+      p: 2,
+      display: 'grid',
+      gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(3, 1fr)" },
+      justifyItems: "center",
+      maxWidth: { xs: 400, sm: 800, lg: 900 }
+    }} >
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
@@ -30,23 +36,20 @@ const RelevantCoverArts = () => {
         onClose={(e, reason) => reason !== 'clickaway' && setOpen(false)}
       />
       {(!Array.isArray(coverArtUrls[currentPlaylistType]) ? Array.from(new Array(6)) : coverArtUrls[currentPlaylistType]).map((album) => (
-        <Paper key={uuidv4()} elevation={10} sx={{ m: 0.8, width: 240, height: 240, bgcolor: "gray" }}>
+        <Paper key={uuidv4()} elevation={10} sx={{ m: 0.8, bgcolor: "gray" }}>
           {album ? (
             <ImageListItem sx={{ p: 0.6 }}>
               <img src={album.src} />
               <ImageListItemBar subtitle={album.artist} sx={{ m: 0.8, height: '14%' }} />
             </ImageListItem>     
             ) : (
-              <Skeleton animation='wave' variant="rounded" width={240} height={240} />
+              <Skeleton sx={{ width: { xs: 160, sm: 240, lg: 300 }, height: { xs: 160, sm: 240, lg: 300 } }} animation='wave' variant="rounded" />
             )
           }
         </Paper>
       ))}
-    </ImageList>
+    </Box>
   )
 }
 
 export default RelevantCoverArts
-
-// !coverArtUrls[currentPlaylistType] ?
-//       <Loader loadingMsg="Loading preview..." /> :

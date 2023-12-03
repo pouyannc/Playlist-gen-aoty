@@ -83,7 +83,7 @@ const OptionsForm = () => {
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 150 }}>
               <InputLabel id="tracksPerAlbum">Album Diversity</InputLabel>
-              <Select labelId="tracksPerAlbum" value={playlistInfo.tracksPerAlbum} label='Diversity' onChange={handleDiversityChange}>
+              <Select labelId="tracksPerAlbum" value={playlistInfo.tracksPerAlbum} label='Album Diversity' onChange={handleDiversityChange}>
                 <MenuItem value={1}>High</MenuItem>
                 <MenuItem value={2}>Medium</MenuItem>
                 <MenuItem value={3}>Low</MenuItem>

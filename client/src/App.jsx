@@ -3,9 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUID } from './reducers/userReducer';
 import { setTokens } from './services/user';
 import { Route, Routes, useSearchParams } from 'react-router-dom';
-import PageContent from './components/pageContent';
-import PageSwitch from './components/PageSwitch';
-import SubPageSwitch from './components/SubPageSwitch';
 import saveSessionExpiry from './util/saveSessionExpiry';
 import { Container } from '@mui/material';
 import Nav from './components/Nav';
@@ -58,7 +55,7 @@ function App() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
       }}>
         <Nav />
         <Routes>
