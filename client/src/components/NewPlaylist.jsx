@@ -6,7 +6,7 @@ const NewPlaylist = () => {
 
   return (
     !newPlaylist.nrOfTracks > 0 ?
-      <LinearProgress sx={{ mb: 6 }} /> :
+      <LinearProgress sx={{ mb: 6, width: '70%' }} /> :
       <Box sx={{ borderTop: 1, borderColor: 'divider' }}>
         <Typography variant="subtitle1" sx={{ mt: 2 }} gutterBottom>The playlist has been generated and added to your Spotify account.</Typography>
         {

@@ -12,7 +12,7 @@ const AboutPage = () => {
         <Typography sx={{ minWidth: 100, m: 4 }} variant="subtitle1">
           Now more than ever, music is so abundant and easily accessible. With it, there are expansive communities built around sharing and discussing the most outstanding new waves in the industry. 
           Using data from community reviews over at AOTY <a target="_blank" rel="noopener noreferrer" style={{ color: 'pink' }} href="https://www.albumoftheyear.org/">(albumoftheyear.org)</a>, this app generates a playlist of the hottest albums that match your preferred criteria.
-          The generated playlist is automatically added to your Spotify. Easily discover new tracks and artists you love using INSERT SITE NAME and the effort of music lovers at AOTY.
+          The generated playlist is automatically added to your Spotify. Easily discover new tracks and artists you love through the AOTY Playlist Gen and the effort of music lovers at AOTY.
         </Typography>
       </Box>
       <Box>

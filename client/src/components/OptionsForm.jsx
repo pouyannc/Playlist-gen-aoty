@@ -16,6 +16,8 @@ const OptionsForm = () => {
   const getAlbumsList = async (e) => {
     e.preventDefault();
     dispatch(setGeneratePlaylist(true));
+    dispatch(setGeneratedNrOfTracks(0));
+    dispatch(setNotEnoughTracks(false));
 
     const accessToken = localStorage.getItem('access');
     console.log('Generating tracklist...')
