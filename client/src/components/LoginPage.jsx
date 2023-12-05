@@ -3,7 +3,7 @@ import { BiSolidSpeaker } from "react-icons/bi";
 import { TbVinyl } from "react-icons/tb";
 
 const LoginPage = () => {
-  const serverUrl = 'http://localhost:3003/api'
+  const serverUrl = '/api'
 
   return (
     <div>
