@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build:ui": "rm -rf public && cd ../client && npm run build && cp -r dist ../server && cd ../server && mv dist public"
   },
   "keywords": [],
   "author": "",
