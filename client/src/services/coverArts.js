@@ -1,7 +1,7 @@
 import axios from 'axios';
 import refreshSessionIfNeeded from '../util/checkAndRefreshSession.ja';
 
-const serverUrl = 'http://localhost:3003/api/tracklist';
+const serverUrl = '/api/tracklist';
 
 const getCoverArts = async (q) => {
   await refreshSessionIfNeeded();

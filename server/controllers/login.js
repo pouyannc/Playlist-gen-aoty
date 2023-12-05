@@ -55,7 +55,7 @@ loginRouter.get('/callback', async (req, res) => {
     const searchParams = new URLSearchParams(paramsObj);
 
     console.log('assigned new access and refresh tokens')
-    res.redirect('http://localhost:5173/?' + searchParams.toString());
+    res.redirect('/?' + searchParams.toString());
 
   } catch (error) {
     console.log(error, 'error retrieving auth tokens')

@@ -31,7 +31,7 @@ const RelevantCoverArts = () => {
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
-        autoHideDuration={4000}
+        autoHideDuration={6000}
         message='Generating playlist preview'
         onClose={(e, reason) => reason !== 'clickaway' && setOpen(false)}
       />

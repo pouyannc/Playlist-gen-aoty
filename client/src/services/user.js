@@ -3,7 +3,7 @@ import saveSessionExpiry from '../util/saveSessionExpiry';
 import refreshSessionIfNeeded from '../util/checkAndRefreshSession.ja';
 
 const profileURL = 'https://api.spotify.com/v1/me'
-const serverURL = 'http://localhost:3003/api/login'
+const serverURL = '/api/login'
 
 let tokens;
 
