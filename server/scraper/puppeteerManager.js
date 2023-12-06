@@ -26,6 +26,7 @@ class PuppeteerManager {
     require('puppeteer-extra-plugin-stealth/evasions/webgl.vendor');
     require('puppeteer-extra-plugin-stealth/evasions/window.outerdimensions');
     require('puppeteer-extra-plugin-stealth/evasions/defaultArgs');
+    require('puppeteer-extra-plugin-user-preferences')
 
     const StealthPlugin = require('puppeteer-extra-plugin-stealth')
     puppeteer.use(StealthPlugin())
