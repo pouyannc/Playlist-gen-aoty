@@ -7,63 +7,36 @@ class PuppeteerManager {
   }
 
   async runPuppeteer() {
-    // const chromium = require('@sparticuz/chromium-min');
     const puppeteer = require('puppeteer-extra');
-
-    // require('puppeteer-extra-plugin-stealth/evasions/chrome.app');
-    // require('puppeteer-extra-plugin-stealth/evasions/chrome.csi');
-    // require('puppeteer-extra-plugin-stealth/evasions/chrome.loadTimes');
-    // require('puppeteer-extra-plugin-stealth/evasions/chrome.runtime');
-    // require('puppeteer-extra-plugin-stealth/evasions/iframe.contentWindow');
-    // require('puppeteer-extra-plugin-stealth/evasions/media.codecs');
-    // require('puppeteer-extra-plugin-stealth/evasions/navigator.hardwareConcurrency');
-    // require('puppeteer-extra-plugin-stealth/evasions/navigator.languages');
-    // require('puppeteer-extra-plugin-stealth/evasions/navigator.permissions');
-    // require('puppeteer-extra-plugin-stealth/evasions/navigator.plugins');
-    // require('puppeteer-extra-plugin-stealth/evasions/navigator.vendor');
-    // require('puppeteer-extra-plugin-stealth/evasions/navigator.webdriver');
-    // require('puppeteer-extra-plugin-stealth/evasions/sourceurl');
-    // require('puppeteer-extra-plugin-stealth/evasions/user-agent-override');
-    // require('puppeteer-extra-plugin-stealth/evasions/webgl.vendor');
-    // require('puppeteer-extra-plugin-stealth/evasions/window.outerdimensions');
-    // require('puppeteer-extra-plugin-stealth/evasions/defaultArgs');
-    // require('puppeteer-extra-plugin-user-preferences');
-    // require('puppeteer-extra-plugin-user-data-dir');
 
     const StealthPlugin = require('puppeteer-extra-plugin-stealth')
     puppeteer.use(StealthPlugin())
 
-    // const browser = await puppeteer.launch({
-    //   args: [...chromium.args, '--hide-scrollbars', '--disable-web-security', "--no-sandbox"],
-    //   executablePath: await chromium.executablePath(
-    //     'https://github.com/Sparticuz/chromium/releases/download/v119.0.0/chromium-v119.0.0-pack.tar'
-    //   ),
-    //   headless: chromium.headless,
-    //   ignoreHTTPSErrors: true,
-    //   dumpio: false,
-    // });
-
     const browser = await puppeteer.launch({
-      args: ['--hide-scrollbars', '--disable-web-security', "--no-sandbox", '--disable-gpu'],
+      args: ['--hide-scrollbars', "--no-sandbox", '--disable-gpu'],
       headless: true,
-      ignoreHTTPSErrors: true,
       dumpio: false,
     });
 
-    let page = await browser.newPage();
-    console.log('going to url', this.url)
-    await page.goto(this.url, { waitUntil: 'domcontentloaded' });
+    try {
+      let page = await browser.newPage();
+      console.log('going to url', this.url)
+      await page.goto(this.url, { waitUntil: 'domcontentloaded' });
 
-    const albumUrls = await this.getAllAlbumUrlsOnPage(page, this.type);
+      const albumUrls = await this.getAllAlbumUrlsOnPage(page, this.type, browser);
 
-    const res = await this.getTracks(page, albumUrls, this.nrOfTracks, this.tracksPerAlbum);
-
-    console.log('done')
-    await browser.close()
-    return res;
+      const res = await this.getTracks(page, albumUrls, this.nrOfTracks, this.tracksPerAlbum, browser);
+      console.log('done')
+      await browser.close()
+      return res;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      await browser.close();
+    }
   }
 
-  async getAllAlbumUrlsOnPage(page, type) {
+  async getAllAlbumUrlsOnPage(page, type, browser) {
     console.log('Waiting for selector to load...');
     await page.waitForSelector('#centerContent');
 
@@ -82,6 +55,9 @@ class PuppeteerManager {
         if (currentMonth.length > maxPageLength) maxPageLength = currentMonth.length;
         monthLinks.push(currentMonth);
         const nextPage = await page.$eval('.headline + div > a', (pageLink) => pageLink.href);
+
+        await page.close();
+        page = await browser.newPage();
         await page.goto(nextPage, { waitUntil: 'domcontentloaded' });
       }
       for (let i = 0; i < maxPageLength; i++) {
@@ -110,20 +86,21 @@ class PuppeteerManager {
 
       const lpLinksWithRatings = lpLinks.map((l, i) => ({ url: l, ratings: nrUserRatings[i] }));
       const lpLinksSorted = lpLinksWithRatings.sort((a, b) => parseInt(b.ratings) - parseInt(a.ratings));
-      //console.log('sorted lps:', lpLinksSorted)
       lpLinks = lpLinksSorted.map((lpObject) => lpObject.url);
     }
-
     return lpLinks;
   }
 
-  async getTracks(page, albumUrls, nrOfTracks, tracksPerAlbum) {
+  async getTracks(page, albumUrls, nrOfTracks, tracksPerAlbum, browser) {
     const shuffle = require('../utils/shuffle');
+    if (page.isClosed()) page = await browser.newPage();
     let tracks = [];
     let albumUrlsLength = albumUrls.length
     if (nrOfTracks === '6') albumUrlsLength = albumUrls.length/2;
     for (let i = 0; i < albumUrlsLength; i++) {
       console.log("Navigating to LP page... ", albumUrls[i]);
+      await page.close();
+      page = await browser.newPage();
       await page.goto(albumUrls[i], { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('#centerContent');
       const artist = await page.$eval('.artist a', (a) => a.innerText);
