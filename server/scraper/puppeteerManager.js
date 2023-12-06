@@ -8,9 +8,8 @@ class PuppeteerManager {
 
   async runPuppeteer() {
     const puppeteer = require('puppeteer-extra');
+    const chromium = require('@sparticuz/chromium-min');
     const config = require('../utils/config');
-
-    const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
     require('puppeteer-extra-plugin-stealth/evasions/chrome.app');
     require('puppeteer-extra-plugin-stealth/evasions/chrome.csi');
@@ -35,18 +34,17 @@ class PuppeteerManager {
     const StealthPlugin = require('puppeteer-extra-plugin-stealth')
     puppeteer.use(StealthPlugin())
 
-    let browser;
-
-    IS_PRODUCTION
-      ? browser = await puppeteer.connect({ browserWSEndpoint: `wss://chrome.browserless.io?token=${config.BLESS_KEY}&stealth&blockAds` })
-      : browser = await puppeteer.launch({
-          headless: true,
-          args: [
-            "--no-sandbox",
-            "--disable-gpu",
-          ],
-          dumpio: false,
-        });
+    const browser = await puppeteer.launch({
+      args: [...chromium.args, '--hide-scrollbars', '--disable-web-security', "--no-sandbox", "--disable-gpu",],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(
+        `https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar`
+      ),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+      dumpio: false,
+    });
+    
     let page = await browser.newPage();
     console.log('going to url', this.url)
     await page.goto(this.url, { waitUntil: 'domcontentloaded' });
