@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prep": "yarn add puppeteer-extra-plugin-stealth",
-    "start": "node api/index.js",
-    "dev": "nodemon api/index.js",
+    "start": "NODE_ENV=production node api/index.js",
+    "dev": "NODE_ENV=development nodemon api/index.js",
     "build:ui": "rm -rf public && cd ../client && npm run build && cp -r dist ../server && cd ../server && mv dist public"
   },
   "keywords": [],
