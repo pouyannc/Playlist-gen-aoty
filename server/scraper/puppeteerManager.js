@@ -8,6 +8,9 @@ class PuppeteerManager {
 
   async runPuppeteer() {
     const puppeteer = require('puppeteer-extra');
+
+    require('puppeteer-extra-plugin-stealth/evasions/chrome.app')
+    
     const StealthPlugin = require('puppeteer-extra-plugin-stealth')
     puppeteer.use(StealthPlugin())
 
