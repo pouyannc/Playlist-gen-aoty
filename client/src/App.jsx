@@ -15,8 +15,6 @@ function App() {
   const uid = useSelector(({ user }) => user.spotifyUID);
   const dispatch = useDispatch();
 
-  
-
   useEffect(() => {
     let accessToken = localStorage.getItem('access');
     let refreshToken = localStorage.getItem('refresh');
