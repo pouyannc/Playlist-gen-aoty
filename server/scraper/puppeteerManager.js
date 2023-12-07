@@ -93,13 +93,11 @@ class PuppeteerManager {
 
   async getTracks(page, albumUrls, nrOfTracks, tracksPerAlbum, browser) {
     const pLimit = require('p-limit');
-    const limit = pLimit(5);
+    const limit = pLimit(4);
     const shuffle = require('../utils/shuffle');
     if (!page.isClosed()) await page.close();
     let tracks = [];
-    let trackPromises = [];
     let albumUrlsLength = albumUrls.length
-    // if (nrOfTracks === '6') albumUrls = albumUrls.slice(0,15);
     if (nrOfTracks === '6') albumUrlsLength = albumUrls.length/2;
     await Promise.all(albumUrls.map((url) => {
       return limit(async () => {
@@ -123,37 +121,6 @@ class PuppeteerManager {
         await page.close();
       })
     }))
-
-    // for (let i = 0; i < albumUrlsLength; i++) {
-    //   console.log("Navigating to LP page... ", albumUrls[i]);
-      
-    //   trackPromises.push(
-    //     async function proc() {
-    //       page = await browser.newPage();
-    //       await page.goto(albumUrls[i], { waitUntil: 'domcontentloaded' });
-    //       await page.waitForSelector('#centerContent');
-    //       const artist = await page.$eval('.artist a', (a) => a.innerText);
-    //       const onSpotify = await page.$('.albumButton.spotify')
-    //       if (onSpotify) {
-    //         let trackTitles = await page.$$eval('.trackTitle > a', (trackNames) => trackNames.map(t => t.innerText));
-    //         if (!trackTitles[0]) {
-    //           trackTitles = await page.$$eval('.trackList li', (trackNames) => trackNames.map(t => t.innerText));
-    //         }
-    //         const randomTitles = shuffle(trackTitles);
-    //         for (let j = 0; j < tracksPerAlbum; j++) {
-    //           tracks.push({ title: randomTitles[j], artist });
-    //           console.log('Pushed to tracklist:', tracks[i], tracks.length)
-    //           if (tracks.length == nrOfTracks) return tracks;
-    //         }
-    //       }
-    //       await page.close();
-    //       return tracks;
-          
-    //     }
-    //   )
-      
-    // }
-    // tracks = await Promise.all(trackPromises);
     return tracks.slice(0, nrOfTracks);
   }
 }

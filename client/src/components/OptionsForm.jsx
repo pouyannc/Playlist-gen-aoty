@@ -3,6 +3,7 @@ import { setGenre, setNrOfTracks, setTracksPerAlbum } from "../reducers/playlist
 import playlistService from '../services/playlist';
 import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select } from "@mui/material";
 import { setGeneratePlaylist, setGeneratedNrOfTracks, setNotEnoughTracks, setPlaylistId, setPlaylistNameGenre } from "../reducers/generatedPlaylistReducer";
+import { setRetrievingFalse, setRetrievingTrue } from "../reducers/coverArtReducer";
 
 const OptionsForm = () => {
   const playlistInfo = useSelector(({ playlistOptions }) => playlistOptions);
@@ -15,6 +16,7 @@ const OptionsForm = () => {
 
   const getAlbumsList = async (e) => {
     e.preventDefault();
+    dispatch(setRetrievingTrue());
     dispatch(setGeneratePlaylist(true));
     dispatch(setGeneratedNrOfTracks(0));
     dispatch(setNotEnoughTracks(false));
@@ -34,6 +36,7 @@ const OptionsForm = () => {
     console.log('Populating the playlist...')
     await playlistService.populatePlaylist({ accessToken, playlistID, tracklist })
     dispatch(setGeneratedNrOfTracks(tracklist.length));
+    dispatch(setRetrievingFalse());
   }
 
   const handleGenreChange = (e) => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from 'uuid';
-import { getCoverUrls } from "../reducers/coverArtReducer";
+import { getCoverUrls, setRetrievingTrue } from "../reducers/coverArtReducer";
 import { Box, ImageListItem, ImageListItemBar, Paper, Skeleton, Snackbar } from "@mui/material";
 
 const RelevantCoverArts = () => {
@@ -13,12 +13,15 @@ const RelevantCoverArts = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!coverArtUrls[currentPlaylistType]) {
-      setOpen(true);
-      const accessToken = localStorage.getItem('access');
-      dispatch(getCoverUrls({ ...playlistInfo, tracksPerAlbum: 1, nrOfTracks: 6, returnType: 'cover', accessToken }));
+    if(!coverArtUrls.retrieving){
+      if (!coverArtUrls[currentPlaylistType]) {
+        dispatch(setRetrievingTrue());
+        setOpen(true);
+        const accessToken = localStorage.getItem('access');
+        dispatch(getCoverUrls({ ...playlistInfo, tracksPerAlbum: 1, nrOfTracks: 6, returnType: 'cover', accessToken }));
+      }
     }
-  }, [currentPlaylistType])
+  }, [currentPlaylistType, coverArtUrls.retrieving])
 
   return (
     <Box sx={{
