@@ -33,7 +33,7 @@ playlistRouter.post('/populate', async (req, res) => {
     
     res.status(201).json(playlistRes.data.snapshot_id);
   } catch (err) {
-    console.log(err, 'Error populating Spotify playlist');
+    console.log( 'Error populating Spotify playlist');
   }
 })
 

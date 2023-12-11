@@ -23,9 +23,8 @@ class PuppeteerManager {
       console.log('going to url', this.url)
       await page.goto(this.url, { waitUntil: 'domcontentloaded' });
 
-      const albumUrls = await this.getAllAlbumUrlsOnPage(page, this.type, browser);
+      const res = await this.getAllAlbumsOnPage(page, this.type, browser);
 
-      const res = await this.getTracks(page, albumUrls, this.nrOfTracks, this.tracksPerAlbum, browser);
       console.log('done')
       await browser.close()
       return res;
@@ -36,24 +35,30 @@ class PuppeteerManager {
     }
   }
 
-  async getAllAlbumUrlsOnPage(page, type, browser) {
+  async getAllAlbumsOnPage(page, type, browser) {
     console.log('Waiting for selector to load...');
     await page.waitForSelector('#centerContent');
 
-    console.log('Constructing links array...')
-    let lpLinks = [];
+    console.log('Constructing album data array...')
+    let lps = [];
     if (type === 'months' || type === 'years') {
       let nrPages;
       if (type === 'months') nrPages = 4;
       else if (type === 'years') nrPages = 3;
       let maxPageLength = 0;
-      const monthLinks = [];
+      const monthLps = [];
       for (let i = 0; i < nrPages; i++) {
         console.log('on page', i + 1);
         await page.waitForSelector('.prev');
-        const currentMonth = await page.$$eval('.image > a', (albums) => albums.map((a) => a.href));
+        const currentMonth = await page.evaluate(() => {
+          const albumBlocks = Array.from(document.querySelectorAll('.albumBlock'));
+          return albumBlocks.map((block) => ({
+            artist: block.querySelector('.artistTitle').textContent,
+            album: block.querySelector('.albumTitle').textContent,
+          }))
+        })
         if (currentMonth.length > maxPageLength) maxPageLength = currentMonth.length;
-        monthLinks.push(currentMonth);
+        monthLps.push(currentMonth);
         const nextPage = await page.$eval('.headline + div > a', (pageLink) => pageLink.href);
 
         await page.close();
@@ -61,12 +66,18 @@ class PuppeteerManager {
         await page.goto(nextPage, { waitUntil: 'domcontentloaded' });
       }
       for (let i = 0; i < maxPageLength; i++) {
-        for (let j = 0; j < monthLinks.length; j++) {
-          if (monthLinks[j][i]) lpLinks.push(monthLinks[j][i]);
+        for (let j = 0; j < monthLps.length; j++) {
+          if (monthLps[j][i]) lps.push(monthLps[j][i]);
         }
       }
     } else {
-      lpLinks = await page.$$eval('.image > a', (albums) => albums.map((a) => a.href));
+      lps = await page.evaluate(() => {
+        const albumBlocks = Array.from(document.querySelectorAll('.albumBlock'));
+        return albumBlocks.map((block) => ({
+          artist: block.querySelector('.artistTitle').textContent,
+          album: block.querySelector('.albumTitle').textContent,
+        }))
+      })
     }
 
     // Include number of ratings in the links array, sort by ratings, and returns sorted links
@@ -84,44 +95,10 @@ class PuppeteerManager {
         nrUserRatings.push(ratings.replace(/\(|\)|\,/g, ''));
       }
 
-      const lpLinksWithRatings = lpLinks.map((l, i) => ({ url: l, ratings: nrUserRatings[i] }));
-      const lpLinksSorted = lpLinksWithRatings.sort((a, b) => parseInt(b.ratings) - parseInt(a.ratings));
-      lpLinks = lpLinksSorted.map((lpObject) => lpObject.url);
+      const lpLinksWithRatings = lps.map((l, i) => ({ ...l, ratings: nrUserRatings[i] }));
+      lps = lpLinksWithRatings.sort((a, b) => parseInt(b.ratings) - parseInt(a.ratings));
     }
-    return lpLinks;
-  }
-
-  async getTracks(page, albumUrls, nrOfTracks, tracksPerAlbum, browser) {
-    const pLimit = require('p-limit');
-    const limit = pLimit(4);
-    const shuffle = require('../utils/shuffle');
-    if (!page.isClosed()) await page.close();
-    let tracks = [];
-    let albumUrlsLength = albumUrls.length
-    if (nrOfTracks === '6') albumUrlsLength = albumUrls.length/2;
-    await Promise.all(albumUrls.map((url) => {
-      return limit(async () => {
-        if (tracks.length == nrOfTracks) return;
-        const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'domcontentloaded' });
-        await page.waitForSelector('#centerContent');
-        const artist = await page.$eval('.artist a', (a) => a.innerText);
-        const onSpotify = await page.$('.albumButton.spotify')
-        if (onSpotify) {
-          let trackTitles = await page.$$eval('.trackTitle > a', (trackNames) => trackNames.map(t => t.innerText));
-          if (!trackTitles[0]) {
-            trackTitles = await page.$$eval('.trackList li', (trackNames) => trackNames.map(t => t.innerText));
-          }
-          const randomTitles = shuffle(trackTitles);
-          for (let j = 0; j < tracksPerAlbum; j++) {
-            tracks.push({ title: randomTitles[j], artist });
-            console.log('Pushed to tracklist:', tracks.length)
-          }
-        }
-        await page.close();
-      })
-    }))
-    return tracks.slice(0, nrOfTracks);
+    return lps;
   }
 }
 
