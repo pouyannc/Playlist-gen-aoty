@@ -1,5 +1,5 @@
 const { default: axios } = require('axios');
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = require('../utils/config');
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN } = require('../utils/config');
 
 
 const loginRouter = require('express').Router();
@@ -63,7 +63,7 @@ loginRouter.get('/callback', async (req, res) => {
 })
 
 loginRouter.get('/refresh', async (req, res) => {
-  const refresh_token = req.query.refresh_token;
+  const refresh_token = req.query.refresh_token || REFRESH_TOKEN;
 
   const authOptions = {
     url: 'https://accounts.spotify.com/api/token',

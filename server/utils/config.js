@@ -5,12 +5,12 @@ const {
   CLIENT_ID, 
   CLIENT_SECRET,
   REDIRECT_URI,
-  BLESS_KEY } = process.env;
+  REFRESH_TOKEN } = process.env;
 
 module.exports = { 
   PORT, 
   CLIENT_ID, 
   CLIENT_SECRET,
   REDIRECT_URI ,
-  BLESS_KEY
+  REFRESH_TOKEN
 };
