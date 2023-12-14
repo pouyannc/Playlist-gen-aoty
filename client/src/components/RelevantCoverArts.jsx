@@ -15,10 +15,12 @@ const RelevantCoverArts = () => {
   useEffect(() => {
     if(!coverArtUrls.retrieving){
       if (!coverArtUrls[currentPlaylistType]) {
-        dispatch(setRetrievingTrue());
-        setOpen(true);
-        const accessToken = localStorage.getItem('access');
-        dispatch(getCoverUrls({ ...playlistInfo, tracksPerAlbum: 1, nrOfTracks: 6, returnType: 'cover', accessToken }));
+        setTimeout(() => {
+          dispatch(setRetrievingTrue());
+          setOpen(true);
+          const accessToken = localStorage.getItem('access');
+          dispatch(getCoverUrls({ ...playlistInfo, tracksPerAlbum: 1, nrOfTracks: 6, returnType: 'cover', accessToken }));
+        }, 1000)
       }
     }
   }, [currentPlaylistType, coverArtUrls.retrieving])
@@ -34,7 +36,7 @@ const RelevantCoverArts = () => {
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         message='Generating playlist preview'
         onClose={(e, reason) => reason !== 'clickaway' && setOpen(false)}
       />
