@@ -63,7 +63,7 @@ loginRouter.get('/callback', async (req, res) => {
 })
 
 loginRouter.get('/refresh', async (req, res) => {
-  const refresh_token = req.query.refresh_token || REFRESH_TOKEN;
+  const refresh_token = req.query.refresh_token === "null" ? REFRESH_TOKEN : req.query.refresh_token;
 
   const authOptions = {
     url: 'https://accounts.spotify.com/api/token',

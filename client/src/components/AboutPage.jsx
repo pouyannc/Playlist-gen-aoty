@@ -2,8 +2,6 @@ import { Box, Typography } from "@mui/material"
 import { FaGitAlt, FaGithub, FaNode, FaReact } from "react-icons/fa";
 import { SiMui, SiVite } from "react-icons/si";
 
-
-
 const AboutPage = () => {
   return (
     <Box sx={{ textAlign: 'left', m: 6, mx: 15, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '70vh' }}>

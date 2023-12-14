@@ -1,9 +1,20 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 import { BiSolidSpeaker } from "react-icons/bi";
 import { TbVinyl } from "react-icons/tb";
+import { refreshToken, setTokens } from "../services/user";
+import { useDispatch } from 'react-redux';
+import { getUID } from '../reducers/userReducer';
+
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const serverUrl = '/api'
+
+  const guestLogin = () => {
+    setTokens(null, null);
+    refreshToken();
+    dispatch(getUID());
+  }
 
   return (
     <div>
@@ -16,7 +27,8 @@ const LoginPage = () => {
         </Box>
         <Typography variant='h6'>Discover music by generating playlists compiled from the hottest albums as per the <a style={{ textDecoration: 'none', color: 'inherit' }} href='https://www.albumoftheyear.org/'>aoty.org</a> community.</Typography>
         <Typography variant='h6'>The current version of this app requires login using a Spotify account.</Typography>
-        <Button href={`${serverUrl}/login`} variant='contained' sx={{ bgcolor: 'green', fontWeight: 700, width: '40%', alignSelf: 'center' }}>Login with Spotify</Button>
+        <Button href={`${serverUrl}/login`} disabled variant='contained' sx={{ bgcolor: 'green', fontWeight: 700, width: '40%', alignSelf: 'center' }}>Login with Spotify</Button>
+        <Button variant='contained' sx={{ fontWeight: 700, width: '40%', alignSelf: 'center' }} onClick={guestLogin}>Enter without login</Button>
       </Container>
     </div>
   )

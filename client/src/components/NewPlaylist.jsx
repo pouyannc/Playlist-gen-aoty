@@ -8,7 +8,11 @@ const NewPlaylist = () => {
     !newPlaylist.nrOfTracks > 0 ?
       <LinearProgress sx={{ mb: 6, width: '70%' }} /> :
       <Box sx={{ borderTop: 1, borderColor: 'divider' }}>
-        <Typography variant="subtitle1" sx={{ mt: 2 }} gutterBottom>The playlist has been generated and added to your Spotify account.</Typography>
+        <Typography variant="subtitle1" sx={{ mt: 2 }} gutterBottom>{localStorage.getItem('refresh') !== 'null' ? 
+          "The playlist has been generated and added to your Spotify account." :
+          `The playlist has been generated. Make sure to save the playlist by following it! `}
+            <a target="_blank" rel="noopener noreferrer" style={{ color: 'lightgreen' }} href={`https://open.spotify.com/playlist/${newPlaylist.id}`}>Click here to open on Spotify</a>
+        </Typography>
         {
           newPlaylist.notEnoughTracks &&
             <Typography variant="subtitle1" gutterBottom>*It seems there weren&apos;t enough tracks to meet the requested playlist length. Choosing a lower album diversity might solve this.</Typography>
