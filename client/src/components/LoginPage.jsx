@@ -26,7 +26,7 @@ const LoginPage = () => {
           <BiSolidSpeaker size={80}/>
         </Box>
         <Typography variant='h6'>Discover music by generating playlists compiled from the hottest albums as per the <a style={{ textDecoration: 'none', color: 'inherit' }} href='https://www.albumoftheyear.org/'>aoty.org</a> community.</Typography>
-        <Typography variant='h6'>The current version of this app requires login using a Spotify account.</Typography>
+        <Typography variant='h6'>The current version of this app can be used without linking a Spotify account. Logging in with Spotify will be reenabled once the app enters extended quota.</Typography>
         <Button href={`${serverUrl}/login`} disabled variant='contained' sx={{ bgcolor: 'green', fontWeight: 700, width: '40%', alignSelf: 'center' }}>Login with Spotify</Button>
         <Button variant='contained' sx={{ fontWeight: 700, width: '40%', alignSelf: 'center' }} onClick={guestLogin}>Enter without login</Button>
       </Container>
