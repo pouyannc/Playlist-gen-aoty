@@ -82,8 +82,10 @@ const OptionsForm = () => {
                 <MenuItem value={20}>20 Tracks</MenuItem>
                 <MenuItem value={30}>30 Tracks</MenuItem>
                 <MenuItem value={40}>40 Tracks</MenuItem>
-                <MenuItem value={50}>50 Tracks</MenuItem>
-                <MenuItem value={60}>60 Tracks</MenuItem>
+                {playlistInfoTypeArr[0] !== 'new' && <MenuItem value={50}>50 Tracks</MenuItem>}
+                {playlistInfoTypeArr[0] !== 'new' && <MenuItem value={60}>60 Tracks</MenuItem>}
+                {playlistInfoTypeArr[0] !== 'new' && <MenuItem value={70}>70 Tracks</MenuItem>}
+                {playlistInfoTypeArr[0] !== 'new' && <MenuItem value={80}>80 Tracks</MenuItem>}
               </Select>
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 150 }}>

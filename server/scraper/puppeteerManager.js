@@ -78,6 +78,19 @@ class PuppeteerManager {
           album: block.querySelector('.albumTitle').textContent,
         }))
       })
+      if (type !== 'new') {
+        await page.close();
+        page = await browser.newPage();
+        await page.goto(`${this.url}&page=2`, { waitUntil: 'domcontentloaded' });
+        const lps2 = await page.evaluate(() => {
+          const albumBlocks = Array.from(document.querySelectorAll('.albumBlock'));
+          return albumBlocks.map((block) => ({
+            artist: block.querySelector('.artistTitle').textContent,
+            album: block.querySelector('.albumTitle').textContent,
+          }))
+        })
+        lps = lps.concat(lps2)
+      }
     }
 
     // Include number of ratings in the links array, sort by ratings, and returns sorted links
