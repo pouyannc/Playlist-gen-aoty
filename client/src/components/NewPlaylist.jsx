@@ -24,6 +24,7 @@ const NewPlaylist = () => {
             <Typography variant="subtitle1" gutterBottom>*It seems there weren&apos;t enough tracks to meet the requested playlist length. Choosing a lower album diversity might solve this.</Typography>
         }
         <iframe
+          title="new playlist embed"
           style={{ borderRadius: '12px', border: 'none' }}
           src={`https://open.spotify.com/embed/playlist/${newPlaylist.id}?utm_source=generator`}
           width="100%"

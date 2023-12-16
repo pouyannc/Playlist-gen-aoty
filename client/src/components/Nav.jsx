@@ -2,13 +2,15 @@ import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { TbVinyl } from "react-icons/tb";
 import { logout } from "../reducers/userReducer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate('/');
   }
 
   return (

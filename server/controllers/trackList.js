@@ -49,6 +49,7 @@ trackListRouter.get('/', async (req, res) => {
           if (return_type === 'uri') albumIds.push(searchItem.id);
           else if (return_type === 'cover') {
             albumIds.push({
+              id: searchItem.id,
               src: searchItem.images[1].url,
               artist: album.artist, 
             });

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from 'uuid';
 import { getCoverUrls, setRetrievingTrue } from "../reducers/coverArtReducer";
-import { Box, ImageListItem, ImageListItemBar, Paper, Skeleton, Snackbar } from "@mui/material";
+import { Box, IconButton, ImageListItem, ImageListItemBar, Link, Paper, Skeleton, Snackbar } from "@mui/material";
+import { FaSpotify } from "react-icons/fa";
 
 const RelevantCoverArts = () => {
   const playlistInfo = useSelector(({ playlistOptions }) => playlistOptions)
@@ -43,10 +44,12 @@ const RelevantCoverArts = () => {
       {(!Array.isArray(coverArtUrls[currentPlaylistType]) ? Array.from(new Array(6)) : coverArtUrls[currentPlaylistType]).map((album) => (
         <Paper key={uuidv4()} elevation={10} sx={{ m: 0.8, bgcolor: "gray" }}>
           {album ? (
-            <ImageListItem sx={{ p: 0.6 }}>
-              <img src={album.src} />
-              <ImageListItemBar subtitle={album.artist} sx={{ m: 0.8, height: '14%' }} />
-            </ImageListItem>     
+            <Link href={`https://open.spotify.com/album/${album.id}`} target="_blank" rel="noreferrer">
+              <ImageListItem sx={{ p: 0.6 }}>
+                <img src={album.src} />
+                <ImageListItemBar subtitle={album.artist} actionIcon={<IconButton size="small" sx={{ color: 'rgba(255, 255, 255, 0.54)' }}><FaSpotify /></IconButton>} sx={{ m: 0.8, height: '14%' }} />
+              </ImageListItem>
+            </Link>
             ) : (
               <Skeleton sx={{ width: { xs: 160, sm: 240, lg: 300 }, height: { xs: 160, sm: 240, lg: 300 } }} animation='wave' variant="rounded" />
             )

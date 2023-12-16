@@ -9,6 +9,9 @@ import { CssBaseline, createTheme } from '@mui/material'
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
+    primary: {
+      main: '#DB7F67'
+    }
   },
   components: {
     MuiCssBaseline: {
