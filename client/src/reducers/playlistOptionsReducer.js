@@ -42,7 +42,7 @@ const playlistOptionsSlice = createSlice({
         description: 'Generate a compilation of tracks from the hottest albums of the last four months',
         tracksPerAlbum: 1,
         nrOfTracks: 30,
-        scrapeUrl: encodeURIComponent(`https://www.albumoftheyear.org/${currentYear}/releases/${month[currentMonth]}-${currentMonth+1}.php?type=lp&s=user&reviews=500`),
+        scrapeUrl: encodeURIComponent(`https://www.albumoftheyear.org/${currentYear}/releases/${month[currentMonth]}-${(currentMonth+1).toString().padStart(2, "0")}.php?type=lp&s=user&reviews=500`),
       }
     },
     switchCurrentYear(state) {
