@@ -49,9 +49,9 @@ const playlistOptionsSlice = createSlice({
       return {
         ...state,
         type: `${currentYear}/rating/all`,
-        title: currentYear,
-        description: `Generate a compilation of tracks from the hottest albums of ${currentYear}`,
-        scrapeUrl: encodeURIComponent(`https://www.albumoftheyear.org/${currentYear}/releases/?type=lp&s=user&reviews=500`),
+        title: currentYear-1,
+        description: `Generate a compilation of tracks from the hottest albums of ${currentYear-1}`,
+        scrapeUrl: encodeURIComponent(`https://www.albumoftheyear.org/${currentYear-1}/releases/?type=lp&s=user&reviews=500`),
       }
     },
     switchRecentYears(state) {

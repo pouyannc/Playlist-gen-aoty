@@ -1,4 +1,4 @@
-# AOTY Playlist generator (1.2)
+# AOTY Playlist generator (1.2.1)
 
 Generate playlists compiled from the most talked about albums over at aoty.org.
 
@@ -11,6 +11,7 @@ Future additions:
 - Generate list based on time periods (decades)
 - Undo playlist
 
+1.2.1: Bug fix for recent months tab.
 
 1.2: Ability to use the app without a Spotify login. Requires user to add the generated playlist to their Spotify library if they want to keep it. Removed logging in with Spotify due to the app not yet being in extended quote mode.
 

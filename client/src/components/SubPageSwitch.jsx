@@ -31,7 +31,7 @@ const SubPageSwitch = () => {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={playlistInfo.type.split('/')[0]} centered>
           <Tab value='months' label='Months' onClick={() => handlePageSwitch('months')} />
-          <Tab value={currentYear.toString()} label={currentYear} onClick={() => handlePageSwitch(currentYear)} />
+          <Tab value={currentYear.toString()} label={currentYear-1} onClick={() => handlePageSwitch(currentYear)} />
           <Tab value='years' label='Years' onClick={() => handlePageSwitch('years')} />
         </Tabs>
         <Tabs value={playlistInfo.type.split('/')[1]} centered>
